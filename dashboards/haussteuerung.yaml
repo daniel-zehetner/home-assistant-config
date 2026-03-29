@@ -328,10 +328,39 @@ views:
         title: Mähroboter (Husqvarna AMC)
         icon: mdi:robot-mower-outline
         entities:
+          - entity: lawn_mower.am310e_nera
+            name: Zustand
           - entity: device_tracker.husqvarna_amc
-            name: Status (home = Ladestation)
+            name: Position (home = Ladestation)
           - entity: switch.husqvarna_amc_internetzugang
             name: Internetzugang
+        footer:
+          type: buttons
+          entities:
+            - entity: lawn_mower.am310e_nera
+              name: Starten
+              icon: mdi:play-circle-outline
+              tap_action:
+                action: perform-action
+                perform_action: lawn_mower.start
+                target:
+                  entity_id: lawn_mower.am310e_nera
+            - entity: lawn_mower.am310e_nera
+              name: Pausieren
+              icon: mdi:pause-circle-outline
+              tap_action:
+                action: perform-action
+                perform_action: lawn_mower.pause
+                target:
+                  entity_id: lawn_mower.am310e_nera
+            - entity: lawn_mower.am310e_nera
+              name: Zur Ladestation
+              icon: mdi:home-circle-outline
+              tap_action:
+                action: perform-action
+                perform_action: lawn_mower.dock
+                target:
+                  entity_id: lawn_mower.am310e_nera
 
       # ── Außenbeleuchtung ───────────────────────────────────────────────────
       - type: entities
@@ -378,171 +407,265 @@ views:
                 target:
                   entity_id: script.bewaesserung_alle_stoppen
 
-      # ── Bewässerung zones ──────────────────────────────────────────────────
+      # ── Watering statistics ────────────────────────────────────────────────
+      - type: history-graph
+        title: Bewässerung Aktivität (48h)
+        hours_to_show: 48
+        entities:
+          - entity: switch.bewasserung_haus_vorne
+            name: Haus Vorne
+          - entity: switch.bewasserung_terasse_links
+            name: Terrasse Links
+          - entity: switch.bewasserung_terasse_rechts
+            name: Terrasse Rechts
+          - entity: switch.bewasserung_links_mitte
+            name: Links Mitte
+          - entity: switch.bewasserung_links_hinten
+            name: Links Hinten
+          - entity: switch.bewasserung_garage_vorne
+            name: Garage Vorne
+          - entity: switch.bewasserung_garage_seitlich
+            name: Garage Seitlich
+          - entity: switch.bewasserung_rechts_hinten
+            name: Rechts Hinten
+
+      # ── Bewässerung zones with statistics ──────────────────────────────────
       - type: grid
         columns: 2
         square: false
         cards:
 
-          - type: entities
-            title: Haus Vorne
-            icon: mdi:home-outline
-            entities:
-              - entity: input_boolean.bewasserung_haus_vorne_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_haus_vorne_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_haus_vorne_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_haus_vorne_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Haus Vorne
+                icon: mdi:home-outline
+                entities:
+                  - entity: input_boolean.bewasserung_haus_vorne_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_haus_vorne_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_haus_vorne_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_haus_vorne_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_haus_vorne
+                    name: Dauer heute
 
-          - type: entities
-            title: Terrasse Links
-            icon: mdi:table-chair
-            entities:
-              - entity: input_boolean.bewasserung_terasse_links_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_terasse_links_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_terasse_links_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_terasse_links_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Terrasse Links
+                icon: mdi:table-chair
+                entities:
+                  - entity: input_boolean.bewasserung_terasse_links_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_terasse_links_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_terasse_links_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_terasse_links_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_terasse_links
+                    name: Dauer heute
 
-          - type: entities
-            title: Terrasse Rechts
-            icon: mdi:table-chair
-            entities:
-              - entity: input_boolean.bewasserung_terasse_rechts_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_terasse_rechts_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_terasse_rechts_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_terasse_rechts_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Terrasse Rechts
+                icon: mdi:table-chair
+                entities:
+                  - entity: input_boolean.bewasserung_terasse_rechts_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_terasse_rechts_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_terasse_rechts_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_terasse_rechts_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_terasse_rechts
+                    name: Dauer heute
 
-          - type: entities
-            title: Links Mitte
-            icon: mdi:flower
-            entities:
-              - entity: input_boolean.bewasserung_links_mitte_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_links_mitte_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_links_mitte_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_links_mitte_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Links Mitte
+                icon: mdi:flower
+                entities:
+                  - entity: input_boolean.bewasserung_links_mitte_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_links_mitte_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_links_mitte_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_links_mitte_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_links_mitte
+                    name: Dauer heute
 
-          - type: entities
-            title: Links Hinten
-            icon: mdi:flower
-            entities:
-              - entity: input_boolean.bewasserung_links_hinten_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_links_hinten_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_links_hinten_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_links_hinten_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Links Hinten
+                icon: mdi:flower
+                entities:
+                  - entity: input_boolean.bewasserung_links_hinten_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_links_hinten_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_links_hinten_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_links_hinten_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_links_hinten
+                    name: Dauer heute
 
-          - type: entities
-            title: Garage Vorne
-            icon: mdi:garage
-            entities:
-              - entity: input_boolean.bewasserung_garage_vorne_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_garage_vorne_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_garage_vorne_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_garage_vorne_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Garage Vorne
+                icon: mdi:garage
+                entities:
+                  - entity: input_boolean.bewasserung_garage_vorne_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_garage_vorne_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_garage_vorne_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_garage_vorne_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_garage_vorne
+                    name: Dauer heute
 
-          - type: entities
-            title: Garage Seitlich
-            icon: mdi:garage-variant
-            entities:
-              - entity: input_boolean.bewasserung_garage_seitlich_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_garage_seitlich_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_garage_seitlich_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_garage_seitlich_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Garage Seitlich
+                icon: mdi:garage-variant
+                entities:
+                  - entity: input_boolean.bewasserung_garage_seitlich_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_garage_seitlich_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_garage_seitlich_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_garage_seitlich_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_garage_seitlich
+                    name: Dauer heute
 
-          - type: entities
-            title: Rechts Hinten
-            icon: mdi:flower-outline
-            entities:
-              - entity: input_boolean.bewasserung_rechts_hinten_aktiv
-                name: Aktiv
-              - entity: input_number.bewasserung_rechts_hinten_dauer
-                name: Dauer (min)
-            footer:
-              type: buttons
-              entities:
-                - entity: script.bewaesserung_rechts_hinten_manuell
-                  name: Jetzt starten
-                  icon: mdi:play
-                  tap_action:
-                    action: perform-action
-                    perform_action: script.turn_on
-                    target:
-                      entity_id: script.bewaesserung_rechts_hinten_manuell
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Rechts Hinten
+                icon: mdi:flower-outline
+                entities:
+                  - entity: input_boolean.bewasserung_rechts_hinten_aktiv
+                    name: Aktiv
+                  - entity: input_number.bewasserung_rechts_hinten_dauer
+                    name: Dauer (min)
+                footer:
+                  type: buttons
+                  entities:
+                    - entity: script.bewaesserung_rechts_hinten_manuell
+                      name: Jetzt starten
+                      icon: mdi:play
+                      tap_action:
+                        action: perform-action
+                        perform_action: script.turn_on
+                        target:
+                          entity_id: script.bewaesserung_rechts_hinten_manuell
+              - type: statistics-graph
+                period: day
+                stat_types:
+                  - change
+                entities:
+                  - entity: switch.bewasserung_rechts_hinten
+                    name: Dauer heute
 
 
   # ════════════════════════════════════════════════════════════════════════════
@@ -757,14 +880,14 @@ views:
             name: Einspeisung
             icon: mdi:transmission-tower-export
 
-      # ── Power gauges ───────────────────────────────────────────────────────
+      # ── Power gauges (kW) ──────────────────────────────────────────────────
       - type: grid
         columns: 2
         square: false
         cards:
           - type: gauge
             entity: sensor.solarnet_pv_leistung
-            name: PV Leistung
+            name: PV Leistung (kW)
             min: 0
             max: 10000
             needle: true
@@ -772,10 +895,11 @@ views:
               green: 4000
               yellow: 1000
               red: 0
+            unit: W
 
           - type: gauge
             entity: sensor.solarnet_leistung_verbrauch
-            name: Hausverbrauch
+            name: Hausverbrauch (kW)
             min: 0
             max: 10000
             needle: true
@@ -783,6 +907,7 @@ views:
               green: 0
               yellow: 3000
               red: 6000
+            unit: W
 
           - type: gauge
             entity: sensor.solarnet_autarkiegrad
@@ -811,32 +936,32 @@ views:
         title: Energiezähler
         icon: mdi:lightning-bolt
         entities:
-          - entity: sensor.pv_gesamtertrag_kwh
+          - entity: sensor.pv_zehetner_daniel_energie_gesamt
             name: PV Gesamtertrag
             icon: mdi:solar-power
-          - entity: sensor.netzeinspeisung_gesamt_kwh
+          - entity: sensor.smart_meter_ts_65a_3_eingespeiste_wirkenergie
             name: Eingespeiste Energie
             icon: mdi:transmission-tower-export
-          - entity: sensor.netzbezug_gesamt_kwh
+          - entity: sensor.smart_meter_ts_65a_3_bezogene_wirkenergie
             name: Bezogene Energie
             icon: mdi:transmission-tower-import
           - entity: sensor.smart_meter_ts_65a_3_wirkleistung
             name: Aktuelle Wirkleistung
             icon: mdi:meter-electric
 
-      # ── Power history chart ────────────────────────────────────────────────
-      - type: history-graph
-        title: Leistung (48h)
+      # ── Energy history chart (48h) ────────────────────────────────────────
+      - type: statistics-graph
+        title: Energie (48h, kWh)
+        period: hour
         hours_to_show: 48
-        logarithmic_scale: false
+        stat_types:
+          - change
         entities:
-          - entity: sensor.solarnet_pv_leistung
-            name: PV
-          - entity: sensor.solarnet_leistung_verbrauch
-            name: Verbrauch
-          - entity: sensor.solarnet_leistung_netzbezug
+          - entity: sensor.pv_zehetner_daniel_energie_gesamt
+            name: PV Ertrag
+          - entity: sensor.smart_meter_ts_65a_3_bezogene_wirkenergie
             name: Netzbezug
-          - entity: sensor.solarnet_leistung_netzeinspeisung
+          - entity: sensor.smart_meter_ts_65a_3_eingespeiste_wirkenergie
             name: Einspeisung
 
       # ── Energy statistics charts ───────────────────────────────────────────
@@ -846,7 +971,7 @@ views:
         stat_types:
           - change
         entities:
-          - entity: sensor.pv_gesamtertrag_kwh
+          - entity: sensor.pv_zehetner_daniel_energie_gesamt
             name: PV Ertrag
 
       - type: statistics-graph
@@ -855,9 +980,9 @@ views:
         stat_types:
           - change
         entities:
-          - entity: sensor.netzbezug_gesamt_kwh
+          - entity: sensor.smart_meter_ts_65a_3_bezogene_wirkenergie
             name: Netzbezug
-          - entity: sensor.netzeinspeisung_gesamt_kwh
+          - entity: sensor.smart_meter_ts_65a_3_eingespeiste_wirkenergie
             name: Einspeisung
 
       # ── Inverter + Smart Meter details ─────────────────────────────────────
@@ -896,3 +1021,103 @@ views:
                 name: Netzfrequenz
               - entity: sensor.smart_meter_ts_65a_3_leistungsfaktor
                 name: Leistungsfaktor
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 6 — Küche
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Küche
+    icon: mdi:silverware-fork-knife
+    cards:
+
+      # ── Overview ────────────────────────────────────────────────────────────
+      - type: glance
+        title: Übersicht
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 3
+        entities:
+          - entity: sensor.geschirrspuler_betriebszustand
+            name: Zustand
+            icon: mdi:dishwasher
+          - entity: sensor.geschirrspuler_programm_fortschritt
+            name: Fortschritt
+            icon: mdi:progress-clock
+          - entity: sensor.geschirrspuler_tur
+            name: Tür
+            icon: mdi:door
+
+      # ── Geschirrspüler Status & Steuerung ──────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+
+          # Status & Program Info
+          - type: entities
+            title: Status & Programm
+            icon: mdi:information
+            entities:
+              - entity: sensor.geschirrspuler_betriebszustand
+                name: Betriebszustand
+              - entity: select.geschirrspuler_aktives_programm
+                name: Aktives Programm
+              - entity: sensor.geschirrspuler_programm_fortschritt
+                name: Fortschritt
+              - entity: sensor.geschirrspuler_programm_endzeit
+                name: Endzeit
+              - entity: sensor.geschirrspuler_tur
+                name: Tür
+
+          # Program Selection & Start/Stop
+          - type: entities
+            title: Programmsteuerung
+            icon: mdi:play-circle-outline
+            entities:
+              - entity: select.geschirrspuler_ausgewahltes_programm
+                name: Programm wählen
+              - entity: number.geschirrspuler_start_in_relativ
+                name: Start in (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: button.geschirrspuler_programm_stoppen
+                  name: Programm stoppen
+                  icon: mdi:stop-circle-outline
+                  tap_action:
+                    action: perform-action
+                    perform_action: button.press
+                    target:
+                      entity_id: button.geschirrspuler_programm_stoppen
+
+          # Power & Options
+          - type: entities
+            title: Stromversorgung & Optionen
+            icon: mdi:power
+            entities:
+              - entity: switch.geschirrspuler_einschalter
+                name: Einschalter
+              - entity: switch.geschirrspuler_halbe_beladung
+                name: Halbe Beladung
+              - entity: switch.geschirrspuler_intensivzone
+                name: Intensivzone
+              - entity: switch.geschirrspuler_vario_speed
+                name: Vario Speed
+              - entity: switch.geschirrspuler_stille_auf_abruf
+                name: Stille auf Abruf
+
+          # Connectivity & Remote Features
+          - type: entities
+            title: Konnektivität & Remote
+            icon: mdi:wifi
+            entities:
+              - entity: binary_sensor.geschirrspuler_konnektivitat
+                name: Verbindung
+              - entity: binary_sensor.geschirrspuler_fernstart
+                name: Fernstart verfügbar
+              - entity: binary_sensor.geschirrspuler_fernsteuerung
+                name: Fernsteuerung aktiviert
+              - entity: switch.siemens_dishwasher_011060386223000149_internet_access
+                name: Internet Zugang
+              - entity: device_tracker.siemens_dishwasher_011060386223000149
+                name: Netzwerk Status

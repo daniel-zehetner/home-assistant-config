@@ -1,0 +1,138 @@
+name: ha-deploy
+displayName: Home Assistant Deploy
+description: Unified deployment tool for Home Assistant automations, dashboards, and configuration
+category: deployment
+version: "1.0.0"
+
+commands:
+  - name: deploy
+    description: Full deployment - validate, commit, push, sync automations
+    params:
+      - name: skip-git
+        type: boolean
+        description: Skip git commit and push
+        default: false
+      - name: skip-reload
+        type: boolean
+        description: Skip reloading automations
+        default: false
+      - name: verbose
+        type: boolean
+        description: Show detailed output
+        default: false
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 -m deployment.skill deploy {{ if .skip_git }}--skip-git{{ end }} {{ if .skip_reload }}--skip-reload{{ end }} {{ if .verbose }}-v{{ end }}
+
+  - name: validate
+    description: Validate Home Assistant configuration without changes
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 -m deployment.skill validate
+
+  - name: push-automations
+    description: Push all automations via REST API
+    params:
+      - name: verbose
+        type: boolean
+        description: Show detailed output
+        default: false
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 -m deployment.skill push-automations {{ if .verbose }}-v{{ end }}
+
+  - name: push-dashboard
+    description: Push individual dashboard to HA
+    params:
+      - name: yaml_file
+        type: string
+        required: true
+        description: Path to dashboard YAML (e.g., dashboards/haussteuerung.yaml)
+      - name: url_path
+        type: string
+        required: true
+        description: URL path - must contain hyphen (e.g., haus-steuerung)
+      - name: title
+        type: string
+        required: true
+        description: Dashboard title shown in HA UI
+      - name: check
+        type: boolean
+        description: Validate only, don't push
+        default: false
+      - name: icon
+        type: string
+        description: Mdi icon code
+        default: "mdi:home-variant"
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 push_dashboard.py {{ .yaml_file }} {{ .url_path }} "{{ .title }}" {{ if .check }}--check{{ end }} --icon {{ .icon }}
+
+  - name: list-dashboards
+    description: List all dashboards with view and card counts
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 -m deployment.skill list-dashboards
+
+  - name: status
+    description: Show HA connection status and automation count
+    invoke: |
+      cd "$(git rev-parse --show-toplevel)"
+      python3 -m deployment.skill status
+
+# Environment requirements
+requirements:
+  - python3
+  - pyyaml
+  - websockets
+  - git
+
+# Dependencies
+dependencies:
+  - deployment.config
+  - deployment.ha_client
+  - deployment.automations
+  - deployment.dashboards
+  - deployment.skill
+
+# Configuration
+config:
+  envFile: .env
+  requiredEnvVars:
+    - HOME_ASSISTANT_URL
+    - HOME_ASSISTANT_API_KEY
+
+# Hooks
+hooks:
+  onBeforeDeploy: validate
+  onAfterDeploy: status
+
+# Documentation
+docs:
+  - path: DEPLOYMENT.md
+    title: Deployment System Guide
+  - path: CLAUDE.md
+    section: Deployment and Validation
+    title: Quick Start
+
+# Examples
+examples:
+  - name: Quick Deploy
+    description: Deploy everything with one command
+    command: deploy
+
+  - name: Validate Only
+    description: Check config without deploying
+    command: validate
+
+  - name: Push Dashboard
+    description: Push specific dashboard
+    command: push-dashboard dashboards/haussteuerung.yaml haus-steuerung "Haussteuerung"
+
+  - name: Check Before Push
+    description: Validate dashboard before pushing
+    command: push-dashboard dashboards/bewaesserung.yaml garten-bewaesserung --check
+
+  - name: View Status
+    description: Check HA connection and automation count
+    command: status

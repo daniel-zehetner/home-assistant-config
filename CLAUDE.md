@@ -168,21 +168,21 @@ script_name:
 
 ### Unified deployment tool
 
-Use `ha_deploy.py` for full deployment (validation, git sync, automation push):
+Use `python3 -m deployment.skill` for full deployment (validation, git sync, automation push):
 
 ```bash
-python3 ha_deploy.py deploy              # Full: validate → commit → push → sync automations
-python3 ha_deploy.py validate            # Validate config only (no changes)
-python3 ha_deploy.py push-automations    # Push all automations via REST API
-python3 ha_deploy.py list-dashboards     # List all dashboards
-python3 ha_deploy.py status              # Show HA connection status
+python3 -m deployment.skill deploy              # Full: validate → commit → push → sync automations
+python3 -m deployment.skill validate            # Validate config only (no changes)
+python3 -m deployment.skill push-automations    # Push all automations via REST API
+python3 -m deployment.skill list-dashboards     # List all dashboards
+python3 -m deployment.skill status              # Show HA connection status
 ```
 
 **Options:**
 ```bash
-python3 ha_deploy.py deploy --skip-git      # Skip git commit/push
-python3 ha_deploy.py deploy --skip-reload   # Skip reloading automations
-python3 ha_deploy.py deploy -v              # Verbose output
+python3 -m deployment.skill deploy --skip-git      # Skip git commit/push
+python3 -m deployment.skill deploy --skip-reload   # Skip reloading automations
+python3 -m deployment.skill deploy -v              # Verbose output
 ```
 
 ### Pushing individual dashboards
@@ -222,7 +222,7 @@ There is no server-side schema validation for Lovelace card configs. Card-level 
 
 To reload automations without full restart:
 - HA UI → Developer Tools → YAML → Reload Automations
-- Or: `python3 ha_deploy.py push-automations` to reload via API
+- Or: `python3 -m deployment.skill push-automations` to reload via API
 - Or: `ha core restart` for a full restart
 
 ## Dashboard authoring rules

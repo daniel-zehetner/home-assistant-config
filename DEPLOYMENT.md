@@ -16,7 +16,7 @@ The deployment system provides:
 ### Full deployment
 
 ```bash
-python3 ha_deploy.py deploy
+python3 -m deployment.skill deploy
 ```
 
 This validates config, commits changes to git, pushes to remote, and syncs automations via API.
@@ -24,7 +24,7 @@ This validates config, commits changes to git, pushes to remote, and syncs autom
 ### Validate only
 
 ```bash
-python3 ha_deploy.py validate
+python3 -m deployment.skill validate
 ```
 
 ### Push dashboards
@@ -37,7 +37,7 @@ python3 push_dashboard.py dashboards/bewaesserung.yaml garten-bewaesserung --che
 ### Check status
 
 ```bash
-python3 ha_deploy.py status
+python3 -m deployment.skill status
 ```
 
 ## Module Structure
@@ -127,7 +127,7 @@ print(dashboard.card_count)  # ~103
 ### Deploy everything
 
 ```bash
-python3 ha_deploy.py deploy
+python3 -m deployment.skill deploy
 ```
 
 Workflow:
@@ -206,10 +206,10 @@ pip install pyyaml websockets
 
 ## CLI Commands
 
-### `ha_deploy.py`
+### `python3 -m deployment.skill`
 
 ```bash
-python3 ha_deploy.py [command] [options]
+python3 -m deployment.skill [command] [options]
 
 Commands:
   deploy              Full deployment (validate, commit, push, sync)
@@ -247,11 +247,10 @@ deployment/
 ├── config.py            # Configuration loading
 ├── ha_client.py         # REST API client
 ├── automations.py       # Automation management
-└── dashboards.py        # Dashboard management
+├── dashboards.py        # Dashboard management
+└── skill.py             # Unified CLI entry point (python3 -m deployment.skill)
 
-ha_deploy.py             # Main CLI tool
-push_dashboard.py        # Dashboard push tool (refactored)
-deploy.sh               # Deprecated — use ha_deploy.py instead
+push_dashboard.py        # Dashboard push tool
 ```
 
 ## Migrating from old scripts

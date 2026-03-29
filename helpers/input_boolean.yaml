@@ -1,0 +1,36 @@
+# Enable/disable switches for garden watering cycles
+bewaesserung_aktiv:
+  name: "Bewässerung aktiv (Master)"
+  icon: mdi:water
+
+bewaesserung_kreis_1_aktiv:
+  name: "Bewässerung Haus Vorne aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_2_aktiv:
+  name: "Bewässerung Terasse Links aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_3_aktiv:
+  name: "Bewässerung Terasse Rechts aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_4_aktiv:
+  name: "Bewässerung Links Mitte aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_5_aktiv:
+  name: "Bewässerung Links Hinten aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_6_aktiv:
+  name: "Bewässerung Garage Vorne aktiv"
+  icon: mdi:water-outline
+
+bewaesserung_kreis_7_aktiv:
+  name: "Bewässerung Garage Seitlich aktiv"
+  icon: mdi:water-outline
+
+bewasserung_rechts_hinten_aktiv:
+  name: "Bewässerung Rechts Hinten aktiv"
+  icon: mdi:water-outline

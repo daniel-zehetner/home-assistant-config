@@ -1,0 +1,38 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: 0
+  unit_system: metric
+  currency: EUR
+  country: AT
+  time_zone: Europe/Vienna
+
+# Enable the frontend
+frontend:
+
+# Enable HTTP
+http:
+
+# Enable logging
+logger:
+  default: warning
+
+# Automations — one file per topic in automations/
+automation: !include_dir_merge_list automations/
+
+# Scripts
+script: !include_dir_merge_named scripts/
+
+# Scenes
+scene: !include_dir_merge_list scenes/
+
+# Helpers
+input_boolean: !include helpers/input_boolean.yaml
+input_number:  !include helpers/input_number.yaml
+
+# Template sensors
+template: !include templates.yaml
+
+# KNX integration
+knx: !include knx.yaml

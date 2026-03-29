@@ -1,0 +1,12 @@
+# KNX integration configuration
+# Connection is auto-discovered; override here if needed:
+# connection_type: tunneling
+# host: 192.168.178.x
+# port: 3671
+
+light:     !include knx/lights.yaml
+cover:     !include knx/covers.yaml
+switch:    !include knx/switches.yaml
+binary_sensor: !include knx/binary_sensors.yaml
+sensor:    !include knx/sensors.yaml
+climate:   !include knx/climate.yaml

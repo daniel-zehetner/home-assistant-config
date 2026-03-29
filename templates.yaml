@@ -1,0 +1,27 @@
+# Template sensors — unit conversions and derived values
+
+- sensor:
+    # ── PV energy counters in kWh (source sensors are in Wh) ─────────────────
+    - name: "PV Gesamtertrag kWh"
+      unique_id: pv_energie_gesamt_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {{ (states('sensor.pv_zehetner_daniel_energie_gesamt') | float(0) / 1000) | round(2) }}
+
+    - name: "Netzbezug gesamt kWh"
+      unique_id: smart_meter_bezogene_energie_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {{ (states('sensor.smart_meter_ts_65a_3_bezogene_wirkenergie') | float(0) / 1000) | round(2) }}
+
+    - name: "Netzeinspeisung gesamt kWh"
+      unique_id: smart_meter_eingespeiste_energie_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {{ (states('sensor.smart_meter_ts_65a_3_eingespeiste_wirkenergie') | float(0) / 1000) | round(2) }}

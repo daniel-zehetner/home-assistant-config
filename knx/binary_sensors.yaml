@@ -1,0 +1,29 @@
+# KNX binary sensors — auto-generated from ETS project
+
+- name: "Tor Status"
+  state_address: "3/0/0"
+  device_class: garage_door
+
+- name: "Bewässerung Ventil 1 Status"
+  state_address: "4/2/0"
+
+- name: "Bewässerung Ventil 2 Status"
+  state_address: "4/2/1"
+
+- name: "Bewässerung Ventil 3 Status"
+  state_address: "4/2/2"
+
+- name: "Bewässerung Ventil 4 Status"
+  state_address: "4/2/3"
+
+- name: "Bewässerung Ventil 5 Status"
+  state_address: "4/2/4"
+
+- name: "Bewässerung Ventil 6 Status"
+  state_address: "4/2/5"
+
+- name: "Bewässerung Ventil 7 Status"
+  state_address: "4/2/6"
+
+- name: "Bewässerung Ventil 8 Status"
+  state_address: "4/2/7"

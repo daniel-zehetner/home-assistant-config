@@ -1,0 +1,14 @@
+# Dashboard: Default
+# url_path: (default)
+
+strategy:
+  type: original-states
+  areas:
+    order:
+        - kuche
+        - schlafzimmer
+        - verteilerschrank
+        - technikraum
+        - wohnzimmer
+  hide_energy: false
+  hide_entities_without_area: false

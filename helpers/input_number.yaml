@@ -1,0 +1,72 @@
+# Watering duration per cycle (in minutes)
+bewaesserung_kreis_1_dauer:
+  name: "Bewässerung Haus Vorne Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_2_dauer:
+  name: "Bewässerung Terasse Links Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_3_dauer:
+  name: "Bewässerung Terasse Rechts Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_4_dauer:
+  name: "Bewässerung Links Mitte Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_5_dauer:
+  name: "Bewässerung Links Hinten Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_6_dauer:
+  name: "Bewässerung Garage Vorne Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewaesserung_kreis_7_dauer:
+  name: "Bewässerung Garage Seitlich Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline
+
+bewasserung_rechts_hinten_dauer:
+  name: "Bewässerung Rechts Hinten Dauer"
+  min: 1
+  max: 60
+  step: 1
+  initial: 10
+  unit_of_measurement: "min"
+  icon: mdi:timer-outline

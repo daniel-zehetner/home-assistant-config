@@ -1,0 +1,32 @@
+- id: bewaesserung_zeitplan
+  alias: "Bewässerung Zeitplan"
+  description: >
+    Starts the sequential watering program at 06:00.
+    Only runs if the master switch (input_boolean.bewaesserung_aktiv) is on.
+  trigger:
+    - platform: time
+      at: "06:00:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.bewaesserung_aktiv
+      state: "on"
+  action:
+    - action: script.bewaesserung_programm
+  mode: single
+
+- id: bewaesserung_notfall_stop
+  alias: "Bewässerung Notfall-Stop"
+  description: >
+    Safety guard — turns off all valves if the master switch is turned off
+    while the watering program is running.
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bewaesserung_aktiv
+      to: "off"
+  condition:
+    - condition: state
+      entity_id: script.bewaesserung_programm
+      state: "on"
+  action:
+    - action: script.bewaesserung_alle_stoppen
+  mode: single

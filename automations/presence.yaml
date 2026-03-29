@@ -1,0 +1,49 @@
+# Automations — presence
+# Generated from live HA entities. Fill in triggers/conditions/actions.
+
+- id: arrived_home
+  alias: Arrived home
+  description: Actions when someone arrives home
+  trigger:
+    - platform: state
+      entity_id:
+        - device_tracker.iphone_von_daniel
+        - device_tracker.philipshue
+        - device_tracker.bose_soundbar_700
+        - device_tracker.soundtouch_10
+        - device_tracker.girax1
+      to: home
+  condition: []
+  action:
+    - action: light.turn_on
+      target:
+        area_id: living_room  # TODO: adjust area
+      data:
+        brightness_pct: 80
+  mode: single
+
+- id: left_home
+  alias: Left home
+  description: Actions when everyone leaves
+  trigger:
+    - platform: state
+      entity_id:
+        - device_tracker.iphone_von_daniel
+        - device_tracker.philipshue
+        - device_tracker.bose_soundbar_700
+        - device_tracker.soundtouch_10
+        - device_tracker.girax1
+      to: not_home
+  condition:
+    - condition: template
+      value_template: >
+        {{ states | selectattr('entity_id', 'in', [
+          "device_tracker.iphone_von_daniel",
+          "device_tracker.philipshue",
+          "device_tracker.bose_soundbar_700",
+          "device_tracker.soundtouch_10",
+          "device_tracker.girax1
+        ]) | selectattr('state', 'eq', 'home') | list | count == 0 }}
+  action: []  # TODO: fill in away actions
+  mode: single
+

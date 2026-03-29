@@ -1,0 +1,99 @@
+# Automations — climate
+# Generated from live HA entities. Fill in triggers/conditions/actions.
+
+- id: climate_knx_interface_temperatur_innen_schlafzimmer_schedule
+  alias: "Schlafzimmer schedule"
+  description: "Set Schlafzimmer temperature based on time of day"
+  trigger:
+    - platform: time
+      at: "07:00:00"
+    - platform: time
+      at: "22:00:00"
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: time
+              after: "07:00:00"
+              before: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_schlafzimmer
+              data:
+                temperature: 21
+        - conditions:
+            - condition: time
+              after: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_schlafzimmer
+              data:
+                temperature: 18
+  mode: single
+
+- id: climate_knx_interface_temperatur_innen_wohnesszimmer_schedule
+  alias: "Wohnesszimmer schedule"
+  description: "Set Wohnesszimmer temperature based on time of day"
+  trigger:
+    - platform: time
+      at: "07:00:00"
+    - platform: time
+      at: "22:00:00"
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: time
+              after: "07:00:00"
+              before: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_wohnesszimmer
+              data:
+                temperature: 21
+        - conditions:
+            - condition: time
+              after: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_wohnesszimmer
+              data:
+                temperature: 18
+  mode: single
+
+- id: climate_knx_interface_temperatur_innen_abstellraum_schedule
+  alias: "Abstellraum schedule"
+  description: "Set Abstellraum temperature based on time of day"
+  trigger:
+    - platform: time
+      at: "07:00:00"
+    - platform: time
+      at: "22:00:00"
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: time
+              after: "07:00:00"
+              before: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_abstellraum
+              data:
+                temperature: 21
+        - conditions:
+            - condition: time
+              after: "22:00:00"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id: climate.knx_interface_temperatur_innen_abstellraum
+              data:
+                temperature: 18
+  mode: single
+

@@ -1,0 +1,32 @@
+# KNX switches — auto-generated from ETS project
+
+- name: "Tor"
+  address: "3/1/0"
+  device_class: garage
+
+- name: "Bewässerung alle Kreise"
+  address: "4/0/0"
+
+- name: "Bewässerung Haus Vorne"
+  address: "4/1/0"
+
+- name: "Bewässerung Terasse Links"
+  address: "4/1/1"
+
+- name: "Bewässerung Terasse Rechts"
+  address: "4/1/2"
+
+- name: "Bewässerung Links Mitte"
+  address: "4/1/3"
+
+- name: "Bewässerung Links Hinten"
+  address: "4/1/4"
+
+- name: "Bewässerung Garage Vorne"
+  address: "4/1/5"
+
+- name: "Bewässerung Garage Seitlich"
+  address: "4/1/6"
+
+- name: "Bewässerung Rechts Hinten"
+  address: "4/1/7"

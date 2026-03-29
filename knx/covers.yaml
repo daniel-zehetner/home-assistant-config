@@ -1,0 +1,117 @@
+# KNX covers (Rollos) — auto-generated from ETS project
+
+- name: "Rollo Büro vorne"
+  move_long_address: "0/1/0"
+  move_short_address: "0/0/1"
+  position_address: "0/4/6"
+  position_state_address: "0/3/1"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Büro seitlich"
+  move_long_address: "0/1/1"
+  move_short_address: "0/0/2"
+  position_address: "0/4/0"
+  position_state_address: "0/3/2"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo WZ seitlich"
+  move_long_address: "0/1/7"
+  move_short_address: "0/0/3"
+  position_address: "0/4/7"
+  position_state_address: "0/3/0"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo WZ hinten"
+  move_long_address: "0/1/3"
+  move_short_address: "0/0/4"
+  position_address: "0/4/8"
+  position_state_address: "0/3/3"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo WZ alle"
+  move_long_address: "0/2/0"
+  move_short_address: "0/2/1"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo WZ Ausgang"
+  move_long_address: "0/2/8"
+  move_short_address: "0/2/9"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Hebeschiebe links"
+  move_long_address: "0/1/4"
+  move_short_address: "0/0/5"
+  position_address: "0/4/9"
+  position_state_address: "0/3/4"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Hebeschiebe rechts"
+  move_long_address: "0/1/5"
+  move_short_address: "0/0/6"
+  position_address: "0/4/10"
+  position_state_address: "0/3/5"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Küche"
+  move_long_address: "0/1/6"
+  move_short_address: "0/0/7"
+  position_address: "0/4/11"
+  position_state_address: "0/3/6"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo KZ aussen seitlich"
+  move_long_address: "0/1/8"
+  move_short_address: "0/0/8"
+  position_address: "0/4/4"
+  position_state_address: "0/3/8"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo KZ aussen hinten"
+  move_long_address: "0/1/9"
+  move_short_address: "0/0/9"
+  position_address: "0/4/3"
+  position_state_address: "0/3/9"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo KZ mitte"
+  move_long_address: "0/1/11"
+  move_short_address: "0/0/11"
+  position_address: "0/4/2"
+  position_state_address: "0/3/10"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Schlafzimmer"
+  move_long_address: "0/1/12"
+  move_short_address: "0/0/12"
+  position_address: "0/4/1"
+  position_state_address: "0/3/11"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Bad"
+  move_long_address: "0/1/13"
+  move_short_address: "0/0/13"
+  position_address: "0/4/5"
+  position_state_address: "0/3/12"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time
+
+- name: "Rollo Gang"
+  move_long_address: "0/1/10"
+  move_short_address: "0/0/10"
+  position_address: "0/4/12"
+  position_state_address: "0/3/7"
+  travelling_time_down: 30  # TODO: measure actual travel time
+  travelling_time_up: 30    # TODO: measure actual travel time

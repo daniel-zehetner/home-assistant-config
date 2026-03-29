@@ -1,0 +1,898 @@
+# Dashboard: Haussteuerung
+# url_path: haus-steuerung
+
+title: Haussteuerung
+views:
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 1 — Lichter & Temperatur
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Lichter
+    icon: mdi:lightbulb-outline
+    cards:
+
+      # ── Temperature overview strip ─────────────────────────────────────────
+      - type: glance
+        title: Temperaturen
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 4
+        entities:
+          - entity: sensor.ba_svm_10_200_12_e_em_outdoor_temperature
+            name: Außen
+            icon: mdi:thermometer
+          - entity: climate.knx_interface_temperatur_innen_wohnesszimmer
+            name: Wohnzimmer
+            icon: mdi:sofa
+          - entity: climate.knx_interface_temperatur_innen_schlafzimmer
+            name: Schlafzimmer
+            icon: mdi:bed
+          - entity: climate.knx_interface_temperatur_innen_abstellraum
+            name: Abstellraum
+            icon: mdi:archive
+
+      # ── Room light cards ───────────────────────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+
+          # Schlafzimmer
+          - type: entities
+            title: Schlafzimmer
+            icon: mdi:bed
+            entities:
+              - entity: light.schlafzimmer
+                name: Nachtisch
+              - entity: light.nachtischhlampe_links
+                name: Nachtisch Links
+              - entity: light.nachttischlampe_rechts
+                name: Nachtisch Rechts
+
+          # Außen / Garten
+          - type: entities
+            title: Außen & Garten
+            icon: mdi:outdoor-lamp
+            entities:
+              - entity: light.knx_interface_licht_terasse
+                name: Terrasse
+              - entity: light.knx_interface_schalten_licht_terasse
+                name: Terrasse (Schalten)
+              - entity: light.knx_interface_schalten_licht_poolrand
+                name: Poolrand
+              - entity: light.knx_interface_schalten_licht_pool
+                name: Pool
+              - entity: light.knx_interface_schalten_licht_weg
+                name: Weg
+
+          # Abstellraum & Nebenraum
+          - type: entities
+            title: Abstellraum & Nebenraum
+            icon: mdi:archive-outline
+            entities:
+              - entity: light.knx_interface_licht_abstellraum_schalten
+                name: Abstellraum
+              - entity: light.knx_interface_licht_nebenraum
+                name: Nebenraum
+
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 2 — Rollos (tile cards — name visible above controls)
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Rollos
+    icon: mdi:blinds
+    cards:
+
+      # ── All-rooms quick control ────────────────────────────────────────────
+      - type: entities
+        title: Alle Rollos
+        icon: mdi:blinds
+        entities:
+          - type: buttons
+            entities:
+              - entity: cover.knx_interface_rollo_wz_alle_lang
+                icon: mdi:arrow-up-bold
+                name: Alle auf
+                tap_action:
+                  action: perform-action
+                  perform_action: cover.open_cover
+                  target:
+                    entity_id:
+                      - cover.knx_interface
+                      - cover.rollo_buro_seitlich_lang
+                      - cover.rollo_wz_seitlich_lang
+                      - cover.knx_interface_rollo_wz_hinten_lang
+                      - cover.knx_interface_rollo_wz_ausgang_lang
+                      - cover.knx_interface_rollo_hebeschiebe_links_lang
+                      - cover.knx_interface_rollo_hebeschiebe_rechts
+                      - cover.knx_interface_rollo_kuche
+                      - cover.knx_interface_rollo_schlafzimmer
+                      - cover.knx_interface_rollo_gang
+                      - cover.knx_interface_rollo_kz_aussen
+                      - cover.knx_interface_rollo_kz_aussen_hinten
+                      - cover.knx_interface_rollo_kz_mitte
+                      - cover.knx_interface_rollo_bad
+              - entity: cover.knx_interface_rollo_wz_alle_lang
+                icon: mdi:stop
+                name: Alle stop
+                tap_action:
+                  action: perform-action
+                  perform_action: cover.stop_cover
+                  target:
+                    entity_id:
+                      - cover.knx_interface
+                      - cover.rollo_buro_seitlich_lang
+                      - cover.rollo_wz_seitlich_lang
+                      - cover.knx_interface_rollo_wz_hinten_lang
+                      - cover.knx_interface_rollo_wz_ausgang_lang
+                      - cover.knx_interface_rollo_hebeschiebe_links_lang
+                      - cover.knx_interface_rollo_hebeschiebe_rechts
+                      - cover.knx_interface_rollo_kuche
+                      - cover.knx_interface_rollo_schlafzimmer
+                      - cover.knx_interface_rollo_gang
+                      - cover.knx_interface_rollo_kz_aussen
+                      - cover.knx_interface_rollo_kz_aussen_hinten
+                      - cover.knx_interface_rollo_kz_mitte
+                      - cover.knx_interface_rollo_bad
+              - entity: cover.knx_interface_rollo_wz_alle_lang
+                icon: mdi:arrow-down-bold
+                name: Alle zu
+                tap_action:
+                  action: perform-action
+                  perform_action: cover.close_cover
+                  target:
+                    entity_id:
+                      - cover.knx_interface
+                      - cover.rollo_buro_seitlich_lang
+                      - cover.rollo_wz_seitlich_lang
+                      - cover.knx_interface_rollo_wz_hinten_lang
+                      - cover.knx_interface_rollo_wz_ausgang_lang
+                      - cover.knx_interface_rollo_hebeschiebe_links_lang
+                      - cover.knx_interface_rollo_hebeschiebe_rechts
+                      - cover.knx_interface_rollo_kuche
+                      - cover.knx_interface_rollo_schlafzimmer
+                      - cover.knx_interface_rollo_gang
+                      - cover.knx_interface_rollo_kz_aussen
+                      - cover.knx_interface_rollo_kz_aussen_hinten
+                      - cover.knx_interface_rollo_kz_mitte
+                      - cover.knx_interface_rollo_bad
+
+      # ── Group controls ────────────────────────────────────────────────────
+      - type: entities
+        title: Gruppen
+        icon: mdi:group
+        entities:
+          - entity: cover.knx_interface_rollo_wz_alle_lang
+            name: WZ Alle
+            icon: mdi:blinds
+          - entity: cover.knx_interface_rollo_wz_ausgang_lang
+            name: Ausgang offen / zu
+            icon: mdi:door-sliding
+
+      # ── Room sections — each room is a vertical-stack with tile cards ──────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+
+          # ── Wohnzimmer ────────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🛋 Wohnzimmer"
+              - type: tile
+                entity: climate.knx_interface_temperatur_innen_wohnesszimmer
+                name: Temperatur
+              - type: tile
+                entity: cover.knx_interface_rollo_wz_alle_lang
+                name: Alle (Gruppe)
+              - type: tile
+                entity: cover.rollo_wz_seitlich_lang
+                name: Seitlich
+              - type: tile
+                entity: cover.knx_interface_rollo_wz_hinten_lang
+                name: Hinten
+              - type: tile
+                entity: cover.knx_interface_rollo_wz_ausgang_lang
+                name: Ausgang (Gruppe)
+
+          # ── Schlafzimmer ──────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🛏 Schlafzimmer"
+              - type: tile
+                entity: climate.knx_interface_temperatur_innen_schlafzimmer
+                name: Temperatur
+              - type: tile
+                entity: cover.knx_interface_rollo_schlafzimmer
+                name: Rollo
+
+          # ── Büro ──────────────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🖥 Büro"
+              - type: tile
+                entity: cover.knx_interface
+                name: Vorne
+              - type: tile
+                entity: cover.rollo_buro_seitlich_lang
+                name: Seitlich
+
+          # ── Kinderzimmer ──────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🧸 Kinderzimmer"
+              - type: tile
+                entity: cover.knx_interface_rollo_kz_aussen
+                name: Außen seitlich
+              - type: tile
+                entity: cover.knx_interface_rollo_kz_aussen_hinten
+                name: Außen hinten
+              - type: tile
+                entity: cover.knx_interface_rollo_kz_mitte
+                name: Mitte
+
+          # ── Terrasse / Hebeschiebe ────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🚪 Terrasse / Hebeschiebe"
+              - type: tile
+                entity: cover.knx_interface_rollo_hebeschiebe_links_lang
+                name: Links
+              - type: tile
+                entity: cover.knx_interface_rollo_hebeschiebe_rechts
+                name: Rechts
+
+          # ── Küche ─────────────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🍳 Küche"
+              - type: tile
+                entity: cover.knx_interface_rollo_kuche
+                name: Rollo
+
+          # ── Bad ───────────────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🚿 Bad"
+              - type: tile
+                entity: cover.knx_interface_rollo_bad
+                name: Rollo
+
+          # ── Gang ──────────────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 🚶 Gang"
+              - type: tile
+                entity: cover.knx_interface_rollo_gang
+                name: Rollo
+
+          # ── Abstellraum ───────────────────────────────────────────────────
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                content: "### 📦 Abstellraum"
+              - type: tile
+                entity: climate.knx_interface_temperatur_innen_abstellraum
+                name: Temperatur
+
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 3 — Garten
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Garten
+    icon: mdi:flower
+    cards:
+
+      # ── Overview strip ─────────────────────────────────────────────────────
+      - type: glance
+        title: Übersicht
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 4
+        entities:
+          - entity: binary_sensor.knx_interface_tor_status
+            name: Tor
+            icon: mdi:gate
+          - entity: device_tracker.husqvarna_amc
+            name: Mähroboter
+            icon: mdi:robot-mower
+          - entity: sensor.ba_svm_10_200_12_e_em_outdoor_temperature
+            name: Außen
+            icon: mdi:thermometer
+          - entity: input_boolean.bewasserung_aktiv_master
+            name: Bewässerung
+            icon: mdi:watering-can
+
+      # ── Tor ────────────────────────────────────────────────────────────────
+      - type: entities
+        title: Tor
+        icon: mdi:gate
+        entities:
+          - entity: switch.knx_interface_tor_schalten
+            name: Tor öffnen / schließen
+          - entity: binary_sensor.knx_interface_tor_status
+            name: Status
+
+      # ── Mähroboter ─────────────────────────────────────────────────────────
+      - type: entities
+        title: Mähroboter (Husqvarna AMC)
+        icon: mdi:robot-mower-outline
+        entities:
+          - entity: device_tracker.husqvarna_amc
+            name: Status (home = Ladestation)
+          - entity: switch.husqvarna_amc_internetzugang
+            name: Internetzugang
+
+      # ── Außenbeleuchtung ───────────────────────────────────────────────────
+      - type: entities
+        title: Außenbeleuchtung
+        icon: mdi:outdoor-lamp
+        entities:
+          - entity: light.knx_interface_licht_terasse
+            name: Terrasse
+          - entity: light.knx_interface_schalten_licht_terasse
+            name: Terrasse (Schalten)
+          - entity: light.knx_interface_schalten_licht_poolrand
+            name: Poolrand
+          - entity: light.knx_interface_schalten_licht_pool
+            name: Pool
+          - entity: light.knx_interface_schalten_licht_weg
+            name: Weg
+
+      # ── Bewässerung master ─────────────────────────────────────────────────
+      - type: entities
+        title: Bewässerung Steuerung
+        icon: mdi:water-pump
+        entities:
+          - entity: input_boolean.bewasserung_aktiv_master
+            name: Automatik aktiv
+          - entity: script.bewaesserung_programm
+            name: Programm läuft
+        footer:
+          type: buttons
+          entities:
+            - entity: script.bewaesserung_programm
+              name: Alle starten
+              icon: mdi:play-circle-outline
+              tap_action:
+                action: perform-action
+                perform_action: script.turn_on
+                target:
+                  entity_id: script.bewaesserung_programm
+            - entity: script.bewaesserung_alle_stoppen
+              name: Alle stoppen
+              icon: mdi:stop-circle-outline
+              tap_action:
+                action: perform-action
+                perform_action: script.turn_on
+                target:
+                  entity_id: script.bewaesserung_alle_stoppen
+
+      # ── Bewässerung zones ──────────────────────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+
+          - type: entities
+            title: Haus Vorne
+            icon: mdi:home-outline
+            entities:
+              - entity: input_boolean.bewasserung_haus_vorne_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_haus_vorne_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_haus_vorne_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_haus_vorne_manuell
+
+          - type: entities
+            title: Terrasse Links
+            icon: mdi:table-chair
+            entities:
+              - entity: input_boolean.bewasserung_terasse_links_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_terasse_links_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_terasse_links_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_terasse_links_manuell
+
+          - type: entities
+            title: Terrasse Rechts
+            icon: mdi:table-chair
+            entities:
+              - entity: input_boolean.bewasserung_terasse_rechts_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_terasse_rechts_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_terasse_rechts_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_terasse_rechts_manuell
+
+          - type: entities
+            title: Links Mitte
+            icon: mdi:flower
+            entities:
+              - entity: input_boolean.bewasserung_links_mitte_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_links_mitte_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_links_mitte_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_links_mitte_manuell
+
+          - type: entities
+            title: Links Hinten
+            icon: mdi:flower
+            entities:
+              - entity: input_boolean.bewasserung_links_hinten_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_links_hinten_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_links_hinten_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_links_hinten_manuell
+
+          - type: entities
+            title: Garage Vorne
+            icon: mdi:garage
+            entities:
+              - entity: input_boolean.bewasserung_garage_vorne_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_garage_vorne_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_garage_vorne_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_garage_vorne_manuell
+
+          - type: entities
+            title: Garage Seitlich
+            icon: mdi:garage-variant
+            entities:
+              - entity: input_boolean.bewasserung_garage_seitlich_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_garage_seitlich_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_garage_seitlich_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_garage_seitlich_manuell
+
+          - type: entities
+            title: Rechts Hinten
+            icon: mdi:flower-outline
+            entities:
+              - entity: input_boolean.bewasserung_rechts_hinten_aktiv
+                name: Aktiv
+              - entity: input_number.bewasserung_rechts_hinten_dauer
+                name: Dauer (min)
+            footer:
+              type: buttons
+              entities:
+                - entity: script.bewaesserung_rechts_hinten_manuell
+                  name: Jetzt starten
+                  icon: mdi:play
+                  tap_action:
+                    action: perform-action
+                    perform_action: script.turn_on
+                    target:
+                      entity_id: script.bewaesserung_rechts_hinten_manuell
+
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 4 — Heizung
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Heizung
+    icon: mdi:heat-pump
+    cards:
+
+      # ── Status overview ────────────────────────────────────────────────────
+      - type: glance
+        title: Übersicht
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 4
+        entities:
+          - entity: sensor.ba_svm_10_200_12_e_em_outdoor_temperature
+            name: Außen
+            icon: mdi:thermometer
+          - entity: sensor.ba_svm_10_200_12_e_em_hot_water_temp
+            name: Warmwasser
+            icon: mdi:water-thermometer
+          - entity: sensor.ba_svm_10_200_12_e_em_calculated_supply_climate_system_1
+            name: Vorlauf Soll
+            icon: mdi:radiator
+          - entity: binary_sensor.ba_svm_10_200_12_e_em_alarm
+            name: Alarm
+            icon: mdi:alert-circle
+
+      # ── Controls ───────────────────────────────────────────────────────────
+      - type: entities
+        title: Betrieb
+        icon: mdi:tune
+        entities:
+          - entity: select.ba_svm_10_200_12_e_em_op_mode
+            name: Betriebsmodus
+          - entity: switch.ba_svm_10_200_12_e_em_smart_control
+            name: Smart Control
+          - entity: switch.ba_svm_10_200_12_e_em_temporary_lux
+            name: Temporary Lux
+          - entity: sensor.ba_svm_10_200_12_e_em_degree_minutes
+            name: Gradminuten
+            icon: mdi:chart-line
+          - entity: sensor.ba_svm_10_200_12_e_em_status
+            name: Status
+            icon: mdi:information-outline
+          - entity: binary_sensor.ba_svm_10_200_12_e_em_konnektivitat
+            name: Verbindung
+            icon: mdi:wifi
+
+      # ── Heating + Hot water ────────────────────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+
+          - type: entities
+            title: Heizkreis
+            icon: mdi:radiator
+            entities:
+              - entity: sensor.ba_svm_10_200_12_e_em_supply_line_eb101_bt12
+                name: Vorlauf (BT12)
+              - entity: sensor.ba_svm_10_200_12_e_em_return_line_eb101_bt3
+                name: Rücklauf (BT3)
+              - entity: sensor.ba_svm_10_200_12_e_em_external_supply_line_bt25
+                name: Ext. Vorlauf (BT25)
+              - entity: sensor.ba_svm_10_200_12_e_em_external_return_line_bt71
+                name: Ext. Rücklauf (BT71)
+              - entity: sensor.ba_svm_10_200_12_e_em_flow_sensor_bf1
+                name: Durchfluss (BF1)
+              - entity: sensor.ba_svm_10_200_12_e_em_heating_curve
+                name: Heizkurve
+              - entity: number.ba_svm_10_200_12_e_em_climate_system
+                name: Offset System 1
+
+          - type: entities
+            title: Warmwasser
+            icon: mdi:water-boiler
+            entities:
+              - entity: sensor.ba_svm_10_200_12_e_em_hot_water_temp
+                name: Temperatur
+              - entity: sensor.ba_svm_10_200_12_e_em_hot_water_top_bt7
+                name: Oben (BT7)
+              - entity: sensor.ba_svm_10_200_12_e_em_hot_water_charging_bt6
+                name: Ladung (BT6)
+              - entity: sensor.ba_svm_10_200_12_e_em_current_hot_water_mode
+                name: Modus
+              - entity: select.ba_svm_10_200_12_e_em_hot_water_amount
+                name: Menge
+              - entity: select.ba_svm_10_200_12_e_em_hot_water_boost
+                name: Boost
+
+      # ── Room temperatures ──────────────────────────────────────────────────
+      - type: entities
+        title: Raumtemperaturen
+        icon: mdi:home-thermometer
+        entities:
+          - entity: climate.knx_interface_temperatur_innen_wohnesszimmer
+            name: Wohnzimmer
+          - entity: climate.knx_interface_temperatur_innen_schlafzimmer
+            name: Schlafzimmer
+          - entity: climate.knx_interface_temperatur_innen_abstellraum
+            name: Abstellraum
+          - entity: sensor.ba_svm_10_200_12_e_em_average_outdoor_temp_bt1
+            name: Ø Außen (BT1)
+
+      # ── Cooling ────────────────────────────────────────────────────────────
+      - type: entities
+        title: Kühlung
+        icon: mdi:snowflake
+        entities:
+          - entity: sensor.ba_svm_10_200_12_e_em_cooling_permitted
+            name: Kühlung erlaubt
+          - entity: sensor.ba_svm_10_200_12_e_em_calculated_cooling_supply_climate_system_1
+            name: Kühl-Vorlauf Soll
+          - entity: sensor.ba_svm_10_200_12_e_em_extern_cooling_supp_line_bt25
+            name: Ext. Kühl-Vorlauf (BT25)
+          - entity: sensor.ba_svm_10_200_12_e_em_cooling_curve
+            name: Kühlkurve
+          - entity: select.ba_svm_10_200_12_e_em_cool_heat_sensor
+            name: Sensor Heiz/Kühl
+          - entity: number.ba_svm_10_200_12_e_em_cooling_offset_climate_system_1
+            name: Kühl-Offset System 1
+
+      # ── Compressor & refrigerant ───────────────────────────────────────────
+      - type: entities
+        title: Verdichter & Kältekreis
+        icon: mdi:heat-pump-outline
+        entities:
+          - entity: sensor.ba_svm_10_200_12_e_em_current_compressor_frequency_eb101
+            name: Frequenz (EB101)
+          - entity: sensor.ba_svm_10_200_12_e_em_requested_compressor_freq_eb101
+            name: Frequenz Soll
+          - entity: sensor.ba_svm_10_200_12_e_em_discharge_eb101_bt14
+            name: Heißgas (BT14)
+          - entity: sensor.ba_svm_10_200_12_e_em_suction_gas_eb101_bt17
+            name: Sauggas (BT17)
+          - entity: sensor.ba_svm_10_200_12_e_em_liquid_line_eb101_bt15
+            name: Flüssigkeitsleitung (BT15)
+          - entity: sensor.ba_svm_10_200_12_e_em_evaporator_eb101_bt16
+            name: Verdampfer (BT16)
+          - entity: sensor.ba_svm_10_200_12_e_em_high_pressure_sensor_eb101_bp4
+            name: Hochdruck (BP4)
+          - entity: sensor.ba_svm_10_200_12_e_em_low_pressure_eb101_bp8
+            name: Niederdruck (BP8)
+          - entity: sensor.ba_svm_10_200_12_e_em_outd_temperature_eb101_bt28
+            name: Außengerät (BT28)
+          - entity: sensor.ba_svm_10_200_12_e_em_charge_pump_speed_eb101_gp12
+            name: Ladepumpe (GP12)
+          - entity: binary_sensor.ba_svm_10_200_12_e_em_charge_pump_eb101_gp12
+            name: Ladepumpe aktiv
+
+      # ── Energy statistics ──────────────────────────────────────────────────
+      - type: entities
+        title: Energiestatistik
+        icon: mdi:counter
+        entities:
+          - entity: sensor.ba_svm_10_200_12_e_em_heating_compressor_only
+            name: Heizung (Verdichter)
+            icon: mdi:radiator
+          - entity: sensor.ba_svm_10_200_12_e_em_heating_including_int_add_heat
+            name: Heizung (gesamt)
+            icon: mdi:radiator
+          - entity: sensor.ba_svm_10_200_12_e_em_hot_water_compressor_only
+            name: Warmwasser (Verdichter)
+            icon: mdi:water-boiler
+          - entity: sensor.ba_svm_10_200_12_e_em_hot_water_including_int_add_heat
+            name: Warmwasser (gesamt)
+            icon: mdi:water-boiler
+          - entity: sensor.ba_svm_10_200_12_e_em_cooling_compressor_only
+            name: Kühlung (Verdichter)
+            icon: mdi:snowflake
+          - entity: sensor.ba_svm_10_200_12_e_em_total_operating_time
+            name: Betriebsstunden gesamt
+            icon: mdi:clock-outline
+          - entity: sensor.ba_svm_10_200_12_e_em_int_elec_add_heat
+            name: Elektro-Zusatzheizung
+            icon: mdi:lightning-bolt
+          - entity: sensor.ba_svm_10_200_12_e_em_current_be1
+            name: Strom BE1
+          - entity: sensor.ba_svm_10_200_12_e_em_current_be2
+            name: Strom BE2
+          - entity: sensor.ba_svm_10_200_12_e_em_current_be3
+            name: Strom BE3
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 5 — Photovoltaik
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Photovoltaik
+    icon: mdi:solar-power-variant
+    cards:
+
+      # ── Current power flow overview ────────────────────────────────────────
+      - type: glance
+        title: Aktuelle Leistung
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 4
+        entities:
+          - entity: sensor.solarnet_pv_leistung
+            name: PV
+            icon: mdi:solar-power
+          - entity: sensor.solarnet_leistung_verbrauch
+            name: Verbrauch
+            icon: mdi:home-lightning-bolt
+          - entity: sensor.solarnet_leistung_netzbezug
+            name: Netzbezug
+            icon: mdi:transmission-tower-import
+          - entity: sensor.solarnet_leistung_netzeinspeisung
+            name: Einspeisung
+            icon: mdi:transmission-tower-export
+
+      # ── Power gauges ───────────────────────────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: gauge
+            entity: sensor.solarnet_pv_leistung
+            name: PV Leistung
+            min: 0
+            max: 10000
+            needle: true
+            severity:
+              green: 4000
+              yellow: 1000
+              red: 0
+
+          - type: gauge
+            entity: sensor.solarnet_leistung_verbrauch
+            name: Hausverbrauch
+            min: 0
+            max: 10000
+            needle: true
+            severity:
+              green: 0
+              yellow: 3000
+              red: 6000
+
+          - type: gauge
+            entity: sensor.solarnet_autarkiegrad
+            name: Autarkiegrad
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              green: 70
+              yellow: 30
+              red: 0
+
+          - type: gauge
+            entity: sensor.solarnet_relativer_eigenverbrauch
+            name: Eigenverbrauch
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              green: 70
+              yellow: 30
+              red: 0
+
+      # ── Energy totals (kWh) ────────────────────────────────────────────────
+      - type: entities
+        title: Energiezähler
+        icon: mdi:lightning-bolt
+        entities:
+          - entity: sensor.pv_gesamtertrag_kwh
+            name: PV Gesamtertrag
+            icon: mdi:solar-power
+          - entity: sensor.netzeinspeisung_gesamt_kwh
+            name: Eingespeiste Energie
+            icon: mdi:transmission-tower-export
+          - entity: sensor.netzbezug_gesamt_kwh
+            name: Bezogene Energie
+            icon: mdi:transmission-tower-import
+          - entity: sensor.smart_meter_ts_65a_3_wirkleistung
+            name: Aktuelle Wirkleistung
+            icon: mdi:meter-electric
+
+      # ── Power history chart ────────────────────────────────────────────────
+      - type: history-graph
+        title: Leistung (48h)
+        hours_to_show: 48
+        logarithmic_scale: false
+        entities:
+          - entity: sensor.solarnet_pv_leistung
+            name: PV
+          - entity: sensor.solarnet_leistung_verbrauch
+            name: Verbrauch
+          - entity: sensor.solarnet_leistung_netzbezug
+            name: Netzbezug
+          - entity: sensor.solarnet_leistung_netzeinspeisung
+            name: Einspeisung
+
+      # ── Energy statistics charts ───────────────────────────────────────────
+      - type: statistics-graph
+        title: Tagesertrag PV (kWh)
+        period: day
+        stat_types:
+          - change
+        entities:
+          - entity: sensor.pv_gesamtertrag_kwh
+            name: PV Ertrag
+
+      - type: statistics-graph
+        title: Netzbezug & Einspeisung (kWh)
+        period: day
+        stat_types:
+          - change
+        entities:
+          - entity: sensor.netzbezug_gesamt_kwh
+            name: Netzbezug
+          - entity: sensor.netzeinspeisung_gesamt_kwh
+            name: Einspeisung
+
+      # ── Inverter + Smart Meter details ─────────────────────────────────────
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: entities
+            title: Wechselrichter
+            icon: mdi:chip
+            entities:
+              - entity: sensor.pv_zehetner_daniel_wechselrichterstatus
+                name: Status
+              - entity: sensor.pv_zehetner_daniel_statusnachricht
+                name: Meldung
+              - entity: sensor.pv_zehetner_daniel_leistung_ac
+                name: Leistung AC
+              - entity: sensor.pv_zehetner_daniel_spannung_dc
+                name: Spannung DC
+              - entity: sensor.pv_zehetner_daniel_stromstarke_dc
+                name: Strom DC
+              - entity: sensor.pv_zehetner_daniel_dc_spannung_2
+                name: Spannung DC 2
+              - entity: sensor.pv_zehetner_daniel_dc_stromstarke_2
+                name: Strom DC 2
+
+          - type: entities
+            title: Smart Meter
+            icon: mdi:meter-electric-outline
+            entities:
+              - entity: sensor.solarnet_zahlermodus
+                name: Zählermodus
+              - entity: sensor.smart_meter_ts_65a_3_zahlerposition
+                name: Position
+              - entity: sensor.smart_meter_ts_65a_3_netzfrequenz
+                name: Netzfrequenz
+              - entity: sensor.smart_meter_ts_65a_3_leistungsfaktor
+                name: Leistungsfaktor

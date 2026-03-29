@@ -1,0 +1,24 @@
+# KNX climate — auto-generated from ETS project
+# NOTE: only temperature_address found in ETS project.
+# Add target_temperature_address / operation_mode_address if available.
+
+- name: "Wohnesszimmer"
+  temperature_address: "1/3/0"
+  # target_temperature_address: "TODO"
+  # operation_mode_address: "TODO"
+  min_temp: 15
+  max_temp: 30
+
+- name: "Schlafzimmer"
+  temperature_address: "1/3/1"
+  # target_temperature_address: "TODO"
+  # operation_mode_address: "TODO"
+  min_temp: 15
+  max_temp: 30
+
+- name: "Abstellraum"
+  temperature_address: "1/3/2"
+  # target_temperature_address: "TODO"
+  # operation_mode_address: "TODO"
+  min_temp: 15
+  max_temp: 30

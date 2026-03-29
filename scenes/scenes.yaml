@@ -1,0 +1,27 @@
+- id: schlafzimmer_hell
+  name: Schlafzimmer Hell
+  entities: {}
+
+- id: schlafzimmer_wertvoll
+  name: Schlafzimmer Wertvoll
+  entities: {}
+
+- id: schlafzimmer_nachtlicht
+  name: Schlafzimmer Nachtlicht
+  entities: {}
+
+- id: schlafzimmer_energie_tanken
+  name: Schlafzimmer Energie tanken
+  entities: {}
+
+- id: schlafzimmer_lesen
+  name: Schlafzimmer Lesen
+  entities: {}
+
+- id: schlafzimmer_entspannen
+  name: Schlafzimmer Entspannen
+  entities: {}
+
+- id: schlafzimmer_konzentrieren
+  name: Schlafzimmer Konzentrieren
+  entities: {}

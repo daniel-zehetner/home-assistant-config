@@ -1,0 +1,60 @@
+# Automations — covers
+# Generated from live HA entities. Fill in triggers/conditions/actions.
+
+- id: covers_open_at_sunrise
+  alias: Covers open at sunrise
+  description: Open all covers at sunrise
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "+00:30:00"
+  condition: []
+  action:
+    - action: cover.open_cover
+      target:
+        entity_id:
+          - cover.rollo_buro_seitlich_lang
+          - cover.rollo_wz_seitlich_lang
+          - cover.knx_interface_rollo_wz_alle_lang
+          - cover.knx_interface_rollo_wz_ausgang_lang
+          - cover.knx_interface_rollo_wz_hinten_lang
+          - cover.knx_interface_rollo_hebeschiebe_links_lang
+          - cover.knx_interface_rollo_hebeschiebe_rechts
+          - cover.knx_interface
+          - cover.knx_interface_rollo_kuche
+          - cover.knx_interface_rollo_schlafzimmer
+          - cover.knx_interface_rollo_gang
+          - cover.knx_interface_rollo_kz_aussen
+          - cover.knx_interface_rollo_kz_aussen_hinten
+          - cover.knx_interface_rollo_kz_mitte
+          - cover.knx_interface_rollo_bad
+  mode: single
+
+- id: covers_close_at_sunset
+  alias: Covers close at sunset
+  description: Close all covers at sunset
+  trigger:
+    - platform: sun
+      event: sunset
+  condition: []
+  action:
+    - action: cover.close_cover
+      target:
+        entity_id:
+          - cover.rollo_buro_seitlich_lang
+          - cover.rollo_wz_seitlich_lang
+          - cover.knx_interface_rollo_wz_alle_lang
+          - cover.knx_interface_rollo_wz_ausgang_lang
+          - cover.knx_interface_rollo_wz_hinten_lang
+          - cover.knx_interface_rollo_hebeschiebe_links_lang
+          - cover.knx_interface_rollo_hebeschiebe_rechts
+          - cover.knx_interface
+          - cover.knx_interface_rollo_kuche
+          - cover.knx_interface_rollo_schlafzimmer
+          - cover.knx_interface_rollo_gang
+          - cover.knx_interface_rollo_kz_aussen
+          - cover.knx_interface_rollo_kz_aussen_hinten
+          - cover.knx_interface_rollo_kz_mitte
+          - cover.knx_interface_rollo_bad
+  mode: single
+

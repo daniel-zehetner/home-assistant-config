@@ -44,6 +44,76 @@ if [[ ! -f .env ]]; then
 fi
 export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs)
 
+# Push automations from YAML files via REST API
+push_automations() {
+  if [[ ! -d automations ]]; then
+    return 0
+  fi
+
+  python3 - <<'PYTHON_END'
+import os, json, yaml, subprocess, sys
+
+HA_URL = os.environ.get('HOME_ASSISTANT_URL', '').rstrip('/')
+HA_KEY = os.environ.get('HOME_ASSISTANT_API_KEY', '')
+
+if not HA_URL or not HA_KEY:
+  print("   ERROR: HOME_ASSISTANT_URL or HOME_ASSISTANT_API_KEY not set")
+  sys.exit(1)
+
+try:
+  import yaml
+except ImportError:
+  print("   PyYAML not found — install it: pip install pyyaml")
+  sys.exit(1)
+
+# Find all automation YAML files
+for root, dirs, files in os.walk('automations'):
+  for file in sorted(files):
+    if not file.endswith('.yaml'):
+      continue
+
+    filepath = os.path.join(root, file)
+    try:
+      with open(filepath, encoding='utf-8') as f:
+        automations = yaml.safe_load(f) or []
+
+      if not isinstance(automations, list):
+        automations = [automations]
+
+      for auto in automations:
+        if not isinstance(auto, dict) or 'id' not in auto:
+          continue
+
+        auto_id = auto['id']
+        # POST /api/config/automation/config/{id}
+        cmd = [
+          'curl', '-s', '-X', 'POST',
+          f'{HA_URL}/config/automation/config/{auto_id}',
+          '-H', f'Authorization: Bearer {HA_KEY}',
+          '-H', 'Content-Type: application/json',
+          '-d', json.dumps(auto)
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+          resp = json.loads(result.stdout)
+          if resp.get('result') == 'ok':
+            print(f"   ✓ {auto_id}")
+          else:
+            print(f"   ⚠ {auto_id}: {resp.get('error', 'unknown error')}")
+        except:
+          print(f"   ⚠ {auto_id}: {result.stdout[:100]}")
+
+    except yaml.YAMLError as e:
+      print(f"   ERROR parsing {filepath}: {e}")
+      sys.exit(1)
+    except Exception as e:
+      print(f"   ERROR processing {filepath}: {e}")
+      sys.exit(1)
+
+PYTHON_END
+}
+
 echo "🚀 Home Assistant Deployment"
 echo "======================================"
 
@@ -89,11 +159,9 @@ if [[ "$SKIP_PUSH" == false ]]; then
   echo "✅"
 fi
 
-# Step 5: Reload automations
-echo "5️⃣  Reloading automations..."
-curl -s -X POST "$HOME_ASSISTANT_URL/services/automation/reload" \
-  -H "Authorization: Bearer $HOME_ASSISTANT_API_KEY" \
-  -H "Content-Type: application/json" > /dev/null
+# Step 5: Push automations via API
+echo "5️⃣  Pushing automations via API..."
+push_automations
 echo "✅"
 
 # Step 6: Pull on HA server (if host provided)

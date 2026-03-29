@@ -164,67 +164,66 @@ script_name:
   - `4/*`   — Irrigation (Bewässerung) valves
 - **TODOs in YAML**: `travelling_time_down/up` in covers.yaml need real measurements; climate setpoint addresses not in ETS export
 
-## Pushing dashboards to HA
+## Deployment and Validation
+
+### Unified deployment tool
+
+Use `ha_deploy.py` for full deployment (validation, git sync, automation push):
 
 ```bash
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  python3 push_dashboard.py dashboards/bewaesserung.yaml garten-bewaesserung "Bewässerung"
+python3 ha_deploy.py deploy              # Full: validate → commit → push → sync automations
+python3 ha_deploy.py validate            # Validate config only (no changes)
+python3 ha_deploy.py push-automations    # Push all automations via REST API
+python3 ha_deploy.py list-dashboards     # List all dashboards
+python3 ha_deploy.py status              # Show HA connection status
 ```
 
-Known dashboards and their url_paths:
-- `dashboards/haussteuerung.yaml` → `haus-steuerung`
-- `dashboards/bewaesserung.yaml` → `garten-bewaesserung`
+**Options:**
+```bash
+python3 ha_deploy.py deploy --skip-git      # Skip git commit/push
+python3 ha_deploy.py deploy --skip-reload   # Skip reloading automations
+python3 ha_deploy.py deploy -v              # Verbose output
+```
 
-- `push_dashboard.py <yaml> <url_path> <title>` — creates the dashboard if missing, always overwrites the config
-- url_path **must contain a hyphen** (HA requirement)
+### Pushing individual dashboards
 
-## Re-importing from HA
+Use `push_dashboard.py` for individual dashboard operations:
+
+```bash
+# Push to HA (creates if missing, always overwrites config)
+python3 push_dashboard.py dashboards/haussteuerung.yaml haus-steuerung "Haussteuerung"
+
+# Validate before pushing (shows diff with live version)
+python3 push_dashboard.py dashboards/bewaesserung.yaml garten-bewaesserung --check
+```
+
+**Arguments:**
+- `<yaml_file>` — path to dashboard YAML
+- `<url_path>` — URL path (must contain hyphen: `haus-steuerung`, `garten-bewaesserung`)
+- `<title>` — dashboard title shown in UI
+- `--check` — validate syntax and show diff with live version (no push)
+- `--icon` — Mdi icon code (default: `mdi:home-variant`)
+
+### Re-importing from HA
 
 ```bash
 # Refresh entity catalog + automation stubs
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  python3 build_config.py
+python3 build_config.py
 
 # Export / re-export dashboards
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  python3 export_dashboards.py
+python3 export_dashboards.py
 ```
 
-## Validation & deployment
-
-### Dashboard validation (before pushing)
-```bash
-# Check YAML syntax + diff against live config — no changes made
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  python3 push_dashboard.py dashboards/haussteuerung.yaml haus-steuerung --check
-```
-
-### HA core config validation (scripts, automations, helpers)
-```bash
-# Returns {"result":"valid","errors":null,"warnings":null} if clean
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  curl -s -X POST "$HOME_ASSISTANT_URL/config/core/check_config" \
-  -H "Authorization: Bearer $HOME_ASSISTANT_API_KEY" -H "Content-Type: application/json"
-```
-
-Note: `HOME_ASSISTANT_URL` already ends in `/api` — do not add `/api` again.
+These scripts do not need `.env` export since they import from `deployment.Config`.
 
 ### Lovelace dashboard limitations
+
 There is no server-side schema validation for Lovelace card configs. Card-level errors (e.g. missing required fields) only appear in the browser after pushing. The `--check` flag catches YAML syntax errors and shows structural diffs but cannot detect card schema violations.
 
 To reload automations without full restart:
 - HA UI → Developer Tools → YAML → Reload Automations
-- Or: `ha core restart` for a full reload
-
-To reload specific YAML domains without a full restart (via API — note `HOME_ASSISTANT_URL` already ends in `/api`):
-```bash
-export $(grep -v '^#' .env | sed 's/ *= */=/' | xargs) && \
-  curl -s -X POST "$HOME_ASSISTANT_URL/services/input_boolean/reload" -H "Authorization: Bearer $HOME_ASSISTANT_API_KEY" -H "Content-Type: application/json" && \
-  curl -s -X POST "$HOME_ASSISTANT_URL/services/input_number/reload"  -H "Authorization: Bearer $HOME_ASSISTANT_API_KEY" -H "Content-Type: application/json" && \
-  curl -s -X POST "$HOME_ASSISTANT_URL/services/script/reload"        -H "Authorization: Bearer $HOME_ASSISTANT_API_KEY" -H "Content-Type: application/json"
-```
-
-Note: these reload commands only affect automations/YAML-read domains. They **cannot create new storage-based helpers** — use the API methods above for that.
+- Or: `python3 ha_deploy.py push-automations` to reload via API
+- Or: `ha core restart` for a full restart
 
 ## Dashboard authoring rules
 

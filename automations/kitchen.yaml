@@ -1,0 +1,12 @@
+- id: "dishwasher_finished_notification"
+  alias: "Geschirrspüler fertig - Benachrichtigung"
+  description: "Sende eine Benachrichtigung wenn der Geschirrspüler sein Programm beendet hat"
+  trigger:
+    - platform: state
+      entity_id: sensor.geschirrspuler_betriebszustand
+      to: "finished"
+  action:
+    - action: notify.notify
+      data:
+        title: "🍽️ Geschirrspüler fertig"
+        message: "Der Geschirrspülgang ist beendet und der Geschirrspüler kann geleert werden"

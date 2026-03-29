@@ -181,7 +181,16 @@ class DashboardPusher:
             print(f"Created dashboard '{title}' at /{url_path}")
         else:
             err_key = resp.get("error", {}).get("translation_key", "")
-            if err_key != "url_already_exists":
+            if err_key == "url_already_exists":
+                # Fetch existing dashboard id so we can update title/icon
+                list_resp = await self.send_request(ws, mid, {"type": "lovelace/dashboards/list"})
+                if list_resp.get("success"):
+                    for d in list_resp.get("result", []):
+                        if d.get("url_path") == url_path:
+                            dashboard_id = d.get("id")
+                            break
+                print(f"Dashboard /{url_path} already exists — updating")
+            else:
                 print(f"ERROR creating dashboard: {resp.get('error')}")
                 await ws.close()
                 sys.exit(1)

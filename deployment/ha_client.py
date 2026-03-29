@@ -56,6 +56,8 @@ class HAClient:
         try:
             return json.loads(result.stdout) if result.stdout else {}
         except json.JSONDecodeError:
+            if result.stderr:
+                print(f"WARNING: reload failed: {result.stderr.strip()}", file=sys.stderr)
             return {}
 
     def get_states(self) -> list:
@@ -73,6 +75,8 @@ class HAClient:
         try:
             return json.loads(result.stdout)
         except json.JSONDecodeError:
+            if result.stderr:
+                print(f"WARNING: get_states failed: {result.stderr.strip()}", file=sys.stderr)
             return []
 
     def push_automation(self, automation_id: str, automation_config: Dict[str, Any]) -> bool:

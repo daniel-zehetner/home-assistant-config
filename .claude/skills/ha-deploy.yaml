@@ -66,7 +66,7 @@ commands:
         default: "mdi:home-variant"
     invoke: |
       cd "$(git rev-parse --show-toplevel)"
-      python3 push_dashboard.py {{ .yaml_file }} {{ .url_path }} "{{ .title }}" {{ if .check }}--check{{ end }} --icon {{ .icon }}
+      python3 -m deployment.skill push-dashboard {{ .yaml_file }} {{ .url_path }} "{{ .title }}" {{ if .check }}--check{{ end }} --icon {{ .icon }}
 
   - name: list-dashboards
     description: List all dashboards with view and card counts
@@ -101,11 +101,6 @@ config:
   requiredEnvVars:
     - HOME_ASSISTANT_URL
     - HOME_ASSISTANT_API_KEY
-
-# Hooks
-hooks:
-  onBeforeDeploy: validate
-  onAfterDeploy: status
 
 # Documentation
 docs:

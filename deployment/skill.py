@@ -106,6 +106,15 @@ class HASkill:
         self.print_status("Reloaded")
         return failed == 0
 
+    def push_dashboard(self, yaml_file: str, url_path: str, title: str, icon: str = "mdi:home-variant", check_only: bool = False) -> bool:
+        """Push a dashboard to HA (delegates to push_dashboard.py)."""
+        import subprocess
+        cmd = [sys.executable, "push_dashboard.py", yaml_file, url_path, title, "--icon", icon]
+        if check_only:
+            cmd.append("--check")
+        result = subprocess.run(cmd, check=False)
+        return result.returncode == 0
+
     def list_dashboards(self) -> bool:
         """List all dashboards."""
         self.print_header("Dashboards")
@@ -146,13 +155,25 @@ def main():
 
     parser = argparse.ArgumentParser(description="Home Assistant Deployment Skill")
     parser.add_argument("command", nargs="?", default="deploy")
+    parser.add_argument("args", nargs="*", help="Command arguments (for push-dashboard: yaml_file url_path title)")
     parser.add_argument("--skip-git", action="store_true")
     parser.add_argument("--skip-reload", action="store_true")
+    parser.add_argument("--check", action="store_true", help="Validate only (push-dashboard)")
+    parser.add_argument("--icon", default="mdi:home-variant", help="Dashboard icon (push-dashboard)")
     parser.add_argument("-v", "--verbose", action="store_true")
 
     args = parser.parse_args()
 
     skill = HASkill()
+
+    def _push_dashboard():
+        if len(args.args) < 2:
+            print("Usage: push-dashboard <yaml_file> <url_path> [title]")
+            return False
+        yaml_file = args.args[0]
+        url_path = args.args[1]
+        title = args.args[2] if len(args.args) > 2 else url_path.replace("-", " ").title()
+        return skill.push_dashboard(yaml_file, url_path, title, icon=args.icon, check_only=args.check)
 
     commands = {
         "deploy": lambda: skill.deploy(
@@ -160,6 +181,7 @@ def main():
         ),
         "validate": skill.validate,
         "push-automations": lambda: skill.push_automations(verbose=args.verbose),
+        "push-dashboard": _push_dashboard,
         "list-dashboards": skill.list_dashboards,
         "status": skill.status,
     }

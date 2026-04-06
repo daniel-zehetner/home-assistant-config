@@ -8,7 +8,7 @@
       at: "06:00:00"
   condition:
     - condition: state
-      entity_id: input_boolean.bewaesserung_aktiv
+      entity_id: input_boolean.bewasserung_aktiv_master
       state: "on"
   action:
     - action: script.bewaesserung_programm
@@ -21,7 +21,7 @@
     while the watering program is running.
   trigger:
     - platform: state
-      entity_id: input_boolean.bewaesserung_aktiv
+      entity_id: input_boolean.bewasserung_aktiv_master
       to: "off"
   condition:
     - condition: state

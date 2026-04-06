@@ -412,21 +412,21 @@ views:
         title: Bewässerung Aktivität (48h)
         hours_to_show: 48
         entities:
-          - entity: switch.bewasserung_haus_vorne
+          - entity: script.bewaesserung_haus_vorne_manuell
             name: Haus Vorne
-          - entity: switch.bewasserung_terasse_links
+          - entity: script.bewaesserung_terasse_links_manuell
             name: Terrasse Links
-          - entity: switch.bewasserung_terasse_rechts
+          - entity: script.bewaesserung_terasse_rechts_manuell
             name: Terrasse Rechts
-          - entity: switch.bewasserung_links_mitte
+          - entity: script.bewaesserung_links_mitte_manuell
             name: Links Mitte
-          - entity: switch.bewasserung_links_hinten
+          - entity: script.bewaesserung_links_hinten_manuell
             name: Links Hinten
-          - entity: switch.bewasserung_garage_vorne
+          - entity: script.bewaesserung_garage_vorne_manuell
             name: Garage Vorne
-          - entity: switch.bewasserung_garage_seitlich
+          - entity: script.bewaesserung_garage_seitlich_manuell
             name: Garage Seitlich
-          - entity: switch.bewasserung_rechts_hinten
+          - entity: script.bewaesserung_rechts_hinten_manuell
             name: Rechts Hinten
 
       # ── Bewässerung zones with statistics ──────────────────────────────────
@@ -456,13 +456,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_haus_vorne_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_haus_vorne
-                    name: Dauer heute
+                  - entity: script.bewaesserung_haus_vorne_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -485,13 +483,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_terasse_links_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_terasse_links
-                    name: Dauer heute
+                  - entity: script.bewaesserung_terasse_links_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -514,13 +510,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_terasse_rechts_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_terasse_rechts
-                    name: Dauer heute
+                  - entity: script.bewaesserung_terasse_rechts_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -543,13 +537,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_links_mitte_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_links_mitte
-                    name: Dauer heute
+                  - entity: script.bewaesserung_links_mitte_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -572,13 +564,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_links_hinten_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_links_hinten
-                    name: Dauer heute
+                  - entity: script.bewaesserung_links_hinten_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -601,13 +591,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_garage_vorne_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_garage_vorne
-                    name: Dauer heute
+                  - entity: script.bewaesserung_garage_vorne_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -630,13 +618,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_garage_seitlich_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_garage_seitlich
-                    name: Dauer heute
+                  - entity: script.bewaesserung_garage_seitlich_manuell
+                    name: Läuft
 
           - type: vertical-stack
             cards:
@@ -659,13 +645,11 @@ views:
                         perform_action: script.turn_on
                         target:
                           entity_id: script.bewaesserung_rechts_hinten_manuell
-              - type: statistics-graph
-                period: day
-                stat_types:
-                  - change
+              - type: history-graph
+                hours_to_show: 24
                 entities:
-                  - entity: switch.bewasserung_rechts_hinten
-                    name: Dauer heute
+                  - entity: script.bewaesserung_rechts_hinten_manuell
+                    name: Läuft
 
 
   # ════════════════════════════════════════════════════════════════════════════

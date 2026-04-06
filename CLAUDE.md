@@ -307,14 +307,14 @@ sequence:
     data:
       address: "4/1/7"        # valve group address (see knx/switches.yaml)
       payload: 1
-      type: binary
+      type: "1.001"
   - delay:
       minutes: "{{ states('input_number.bewasserung_X_dauer') | int }}"
   - action: knx.send
     data:
       address: "4/1/7"
       payload: 0
-      type: binary
+      type: "1.001"
 ```
 
 ## Helper/script naming conventions

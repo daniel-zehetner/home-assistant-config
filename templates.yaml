@@ -25,3 +25,28 @@
       state_class: total_increasing
       state: >
         {{ (states('sensor.smart_meter_ts_65a_3_eingespeiste_wirkenergie') | float(0) / 1000) | round(2) }}
+
+    # ── Room temperatures (from KNX climate current_temperature attribute) ────
+    - name: "Temperatur Wohnzimmer"
+      unique_id: temperatur_wohnzimmer
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      state: >
+        {{ state_attr('climate.knx_interface_temperatur_innen_wohnesszimmer', 'current_temperature') | float(0) }}
+
+    - name: "Temperatur Schlafzimmer"
+      unique_id: temperatur_schlafzimmer
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      state: >
+        {{ state_attr('climate.knx_interface_temperatur_innen_schlafzimmer', 'current_temperature') | float(0) }}
+
+    - name: "Temperatur Abstellraum"
+      unique_id: temperatur_abstellraum
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      state: >
+        {{ state_attr('climate.knx_interface_temperatur_innen_abstellraum', 'current_temperature') | float(0) }}

@@ -246,40 +246,58 @@ bewaesserung_programm:
           address: 4/1/4
           payload: 0
           type: '1.001'
+    - parallel:
+      - sequence:
+          - if:
+            - condition: state
+              entity_id: input_boolean.bewasserung_garage_vorne_aktiv
+              state: 'on'
+            then:
+            - action: knx.send
+              data:
+                address: 4/1/5
+                payload: 1
+                type: '1.001'
+            - delay:
+                minutes: '{{ states(''input_number.bewasserung_garage_vorne_dauer'') | int }}'
+            - action: knx.send
+              data:
+                address: 4/1/5
+                payload: 0
+                type: '1.001'
+      - sequence:
+          - if:
+            - condition: state
+              entity_id: input_boolean.bewasserung_garage_seitlich_aktiv
+              state: 'on'
+            then:
+            - action: knx.send
+              data:
+                address: 4/1/6
+                payload: 1
+                type: '1.001'
+            - delay:
+                minutes: '{{ states(''input_number.bewasserung_garage_seitlich_dauer'') | int }}'
+            - action: knx.send
+              data:
+                address: 4/1/6
+                payload: 0
+                type: '1.001'
     - if:
       - condition: state
-        entity_id: input_boolean.bewasserung_garage_vorne_aktiv
+        entity_id: input_boolean.bewasserung_rechts_hinten_aktiv
         state: 'on'
       then:
       - action: knx.send
         data:
-          address: 4/1/5
+          address: 4/1/7
           payload: 1
           type: '1.001'
       - delay:
-          minutes: '{{ states(''input_number.bewasserung_garage_vorne_dauer'') | int
-            }}'
+          minutes: '{{ states(''input_number.bewasserung_rechts_hinten_dauer'') | int }}'
       - action: knx.send
         data:
-          address: 4/1/5
-          payload: 0
-          type: '1.001'
-    - if:
-      - condition: state
-        entity_id: input_boolean.bewasserung_garage_seitlich_aktiv
-        state: 'on'
-      then:
-      - action: knx.send
-        data:
-          address: 4/1/6
-          payload: 1
-          type: '1.001'
-      - delay:
-          minutes: '{{ states(''input_number.bewasserung_garage_seitlich_dauer'')
-            | int }}'
-      - action: knx.send
-        data:
-          address: 4/1/6
+          address: 4/1/7
           payload: 0
           type: '1.001'
 bewaesserung_rechts_hinten_manuell:

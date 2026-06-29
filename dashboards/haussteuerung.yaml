@@ -11,27 +11,6 @@ views:
     icon: mdi:lightbulb-outline
     cards:
 
-      # ── Temperature overview strip ─────────────────────────────────────────
-      - type: glance
-        title: Temperaturen
-        show_name: true
-        show_icon: true
-        show_state: true
-        columns: 4
-        entities:
-          - entity: sensor.ba_svm_10_200_12_e_em_outdoor_temperature
-            name: Außen
-            icon: mdi:thermometer
-          - entity: climate.knx_interface_temperatur_innen_wohnesszimmer
-            name: Wohnzimmer
-            icon: mdi:sofa
-          - entity: climate.knx_interface_temperatur_innen_schlafzimmer
-            name: Schlafzimmer
-            icon: mdi:bed
-          - entity: climate.knx_interface_temperatur_innen_abstellraum
-            name: Abstellraum
-            icon: mdi:archive
-
       # ── Room light cards ───────────────────────────────────────────────────
       - type: grid
         columns: 2
@@ -49,6 +28,12 @@ views:
                 name: Nachtisch Links
               - entity: light.nachttischlampe_rechts
                 name: Nachtisch Rechts
+              - entity: climate.knx_interface_temperatur_innen_schlafzimmer
+                type: attribute
+                attribute: current_temperature
+                name: Temperatur
+                icon: mdi:bed
+                suffix: " °C"
 
           # Außen / Garten
           - type: entities
@@ -75,6 +60,27 @@ views:
                 name: Abstellraum
               - entity: light.knx_interface_licht_nebenraum
                 name: Nebenraum
+              - entity: climate.knx_interface_temperatur_innen_abstellraum
+                type: attribute
+                attribute: current_temperature
+                name: Temperatur
+                icon: mdi:archive
+                suffix: " °C"
+
+          # Wohnzimmer & Außen (temperature only — no light entities for these)
+          - type: entities
+            title: Wohnzimmer & Außen
+            icon: mdi:thermometer
+            entities:
+              - entity: climate.knx_interface_temperatur_innen_wohnesszimmer
+                type: attribute
+                attribute: current_temperature
+                name: Wohnzimmer
+                icon: mdi:sofa
+                suffix: " °C"
+              - entity: sensor.ba_svm_10_200_12_e_em_outdoor_temperature
+                name: Außen
+                icon: mdi:thermometer
 
 
   # ════════════════════════════════════════════════════════════════════════════
@@ -157,6 +163,44 @@ views:
                       - cover.knx_interface_rollo_kz_aussen_hinten
                       - cover.knx_interface_rollo_kz_mitte
                       - cover.knx_interface_rollo_bad
+
+      # ── Per-floor quick control ────────────────────────────────────────────
+      - type: entities
+        title: Etagen
+        icon: mdi:blinds
+        entities:
+          - type: buttons
+            entities:
+              - entity: cover.knx_interface
+                icon: mdi:arrow-down-bold
+                name: EG zu
+                tap_action:
+                  action: perform-action
+                  perform_action: cover.close_cover
+                  target:
+                    entity_id:
+                      - cover.knx_interface
+                      - cover.rollo_buro_seitlich_lang
+                      - cover.rollo_wz_seitlich_lang
+                      - cover.knx_interface_rollo_wz_hinten_lang
+                      - cover.knx_interface_rollo_wz_ausgang_lang
+                      - cover.knx_interface_rollo_hebeschiebe_links_lang
+                      - cover.knx_interface_rollo_hebeschiebe_rechts
+                      - cover.knx_interface_rollo_kuche
+              - entity: cover.knx_interface_rollo_schlafzimmer
+                icon: mdi:arrow-down-bold
+                name: OG zu
+                tap_action:
+                  action: perform-action
+                  perform_action: cover.close_cover
+                  target:
+                    entity_id:
+                      - cover.knx_interface_rollo_schlafzimmer
+                      - cover.knx_interface_rollo_bad
+                      - cover.knx_interface_rollo_gang
+                      - cover.knx_interface_rollo_kz_aussen
+                      - cover.knx_interface_rollo_kz_aussen_hinten
+                      - cover.knx_interface_rollo_kz_mitte
 
       # ── Group controls ────────────────────────────────────────────────────
       - type: entities

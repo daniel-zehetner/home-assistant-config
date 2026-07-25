@@ -70,3 +70,24 @@ bewasserung_rechts_hinten_dauer:
   initial: 10
   unit_of_measurement: "min"
   icon: mdi:timer-outline
+
+# Pool pH- dosing canister capacity — used to convert consumption deltas to fill %
+pool_ph_kanister_kapazitaet:
+  name: "Pool pH- Kanister Kapazitaet"
+  min: 1
+  max: 50
+  step: 0.5
+  initial: 20
+  unit_of_measurement: "L"
+  icon: mdi:beaker-outline
+
+# Pool pH- canister fill level — user-editable, decremented on the fly by
+# automation "pool_ph_kanister_fuellstand_update" (automations/pool.yaml)
+pool_ph_kanister_fuellstand:
+  name: "Pool pH- Kanister Fuellstand"
+  min: 0
+  max: 100
+  step: 0.1
+  initial: 100
+  unit_of_measurement: "%"
+  icon: mdi:beaker-outline

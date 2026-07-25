@@ -1,0 +1,41 @@
+- id: "pool_ph_kanister_fuellstand_update"
+  alias: "Pool pH- Kanister Füllstand aktualisieren"
+  description: "Zieht bei jedem Anstieg des Gesamtverbrauchs den entsprechenden Prozentanteil (bezogen auf die Kanister-Kapazität) vom konfigurierten Füllstand ab"
+  trigger:
+    - platform: state
+      entity_id: sensor.aseko_asin_aqua_salt_110220989_ph_verbraucht_gesamt
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state is not none and trigger.to_state is not none
+           and trigger.from_state.state not in ['unknown', 'unavailable']
+           and trigger.to_state.state not in ['unknown', 'unavailable'] }}
+  action:
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.pool_ph_kanister_fuellstand
+      data:
+        value: >
+          {% set delta_l = (trigger.to_state.state | float) - (trigger.from_state.state | float) %}
+          {% set kapazitaet = states('input_number.pool_ph_kanister_kapazitaet') | float(20) %}
+          {% set delta_pct = (delta_l / kapazitaet * 100) if kapazitaet > 0 else 0 %}
+          {% set current = states('input_number.pool_ph_kanister_fuellstand') | float(100) %}
+          {{ [[current - delta_pct, 0] | max, 100] | min | round(2) }}
+  mode: single
+
+- id: "pool_ph_minus_kanister_niedrig"
+  alias: "Pool pH- Kanister niedrig - Benachrichtigung"
+  description: "Benachrichtigt, wenn der pH--Dosierkanister nur noch 10% Füllstand hat und nachgefüllt werden muss"
+  trigger:
+    - platform: numeric_state
+      entity_id: input_number.pool_ph_kanister_fuellstand
+      below: 10
+  condition: []
+  action:
+    - action: notify.notify
+      data:
+        title: "🧪 Pool pH- Kanister fast leer"
+        message: >
+          Der pH--Kanister hat nur noch {{ states('input_number.pool_ph_kanister_fuellstand') | round(0) }}% Füllstand.
+          Bitte nachfüllen und danach den "Pool pH- Kanister nachgefuellt"-Button im Pool-Tab drücken.
+  mode: single

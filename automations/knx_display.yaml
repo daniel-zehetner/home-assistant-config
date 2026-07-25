@@ -1,0 +1,28 @@
+- id: "knx_glastaster_temp_banner"
+  alias: "KNX Glastaster Temperatur-Banner"
+  description: "Alternates the MDT Glastaster text display between pool and outdoor temperature every 5 seconds"
+  trigger:
+    - platform: time_pattern
+      seconds: "/5"
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ (as_timestamp(now()) | int // 5) % 2 == 0 }}"
+          sequence:
+            - action: knx.send
+              data:
+                address: ["1/2/0", "1/2/1", "1/2/2"]
+                type: "16.001"
+                payload: "{{ 'Pool ' ~ '%.1f'|format(states('sensor.aseko_asin_aqua_salt_110220989_wassertemperatur')|float(0)) ~ '°C' }}"
+        - conditions:
+            - condition: template
+              value_template: "{{ (as_timestamp(now()) | int // 5) % 2 == 1 }}"
+          sequence:
+            - action: knx.send
+              data:
+                address: ["1/2/0", "1/2/1", "1/2/2"]
+                type: "16.001"
+                payload: "{{ 'Aussen ' ~ '%.1f'|format(states('sensor.ba_svm_10_200_12_e_em_outdoor_temperature')|float(0)) ~ '°C' }}"
+  mode: single

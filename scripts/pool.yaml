@@ -1,0 +1,16 @@
+# Documentation mirror only — storage-based, HA does not load this file.
+# See CLAUDE.md "HA storage model" section.
+
+pool_ph_kanister_nachfuellen:
+  alias: "Pool pH- Kanister nachgefuellt"
+  icon: mdi:beaker-plus-outline
+  mode: single
+  sequence:
+    - action: button.press
+      target:
+        entity_id: button.aseko_asin_aqua_salt_110220989_ph_nachfullen
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.pool_ph_kanister_fuellstand
+      data:
+        value: 100

@@ -157,6 +157,7 @@ script_name:
   - `0/2/*` — Rollo group commands (WZ alle, WZ Ausgang, etc.)
   - `0/3/*` — Rollo status (DPT 5.001) → `position_state_address`
   - `0/4/*` — Rollo Höhe / setpoint (DPT 5.001) → `position_address`
+  - `1/2/0`, `1/2/1`, `1/2/2` — Glastaster text display banners (DPT 16.001, alternates pool/outdoor temp every 5s)
   - `1/3/*` — Temperature sensors (DPT 9.001)
   - `2/0/*`, `2/1/*`, `2/3/*` — Light switch commands (DPT 1.001)
   - `2/2/*` — Light status feedback (DPT 1.011)
@@ -336,6 +337,7 @@ The Bewässerung dashboards use the **zone-name** format. New zones should follo
 | Fronius/Solarnet | `sensor.solarnet_*`, `sensor.pv_zehetner_daniel_*`, `sensor.smart_meter_ts_65a_3_*` | PV inverter + smart meter |
 | Husqvarna AMC | `device_tracker.husqvarna_amc`, `switch.husqvarna_amc_internetzugang` | Only Fritz!Box network tracking — no rich mower integration yet |
 | NIBE heat pump | `sensor.ba_svm_10_200_12_e_em_*` | Many sensors/controls |
+| Aseko ASIN AQUA Salt NET (pool) | `sensor.aseko_asin_aqua_salt_110220989_*`, `binary_sensor.aseko_asin_aqua_salt_110220989_*`, `button.aseko_asin_aqua_salt_110220989_ph_nachfullen` | HACS custom integration, now tracking the fork `daniel-zehetner/home-assistant-aseko-local` (installed via HACS custom repository, replacing the upstream `hopkins-tk/home-assistant-aseko-local`) — reads the controller's local TCP stream (no cloud/subscription). The controller's USR-K6 network bridge module (`192.168.178.81`) must have Remote Server Address/Port pointed at the HA host on port `47524`. This controller speaks the **v8 text protocol** (not the older ≤7.x binary protocol). The fork's `electrolyzer-v8` branch was merged into the fork's `main` (PR #1, merge commit `71caffb`) and installed 2026-07-25 — adds salinity/`electrolyzer_active`/`electrolyzer_power`/`electrolyzer_direction` parsing for SALT devices. Live entities confirm it's working (`elektrolyseur_leistung`, `salzgehalt`, etc. now report real values instead of `unavailable`); the field indices in `custom_components/aseko_local/aseko_decoder_v8.py` have been sanity-checked against real behaviour and confirmed correct. Dashboard: "Pool" tab in `dashboards/haussteuerung.yaml`. |
 
 ## Automation modes
 

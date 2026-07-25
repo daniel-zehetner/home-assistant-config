@@ -10,3 +10,4 @@ switch:    !include knx/switches.yaml
 binary_sensor: !include knx/binary_sensors.yaml
 sensor:    !include knx/sensors.yaml
 climate:   !include knx/climate.yaml
+event:     !include knx/events.yaml

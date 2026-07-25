@@ -58,3 +58,29 @@
           - cover.knx_interface_rollo_bad
   mode: single
 
+- id: og_zu_via_knx_taster
+  alias: "OG zu (KNX-Taster)"
+  description: "Closes upstairs (OG) covers when the physical KNX pushbutton sends a down/close command on group address 0/2/12"
+  trigger:
+    - platform: event
+      event_type: knx_event
+      event_data:
+        destination: "0/2/12"
+  condition:
+    - condition: template
+      # DPT 1.008 (up/down): payload 1 = Down/close. TODO: verify against a real
+      # telegram capture (HA → Settings → Devices & services → KNX → Group monitor)
+      # after deploying, in case the wiring uses the opposite convention.
+      value_template: "{{ trigger.event.data.data == [1] }}"
+  action:
+    - action: cover.close_cover
+      target:
+        entity_id:
+          - cover.knx_interface_rollo_schlafzimmer
+          - cover.knx_interface_rollo_bad
+          - cover.knx_interface_rollo_gang
+          - cover.knx_interface_rollo_kz_aussen
+          - cover.knx_interface_rollo_kz_aussen_hinten
+          - cover.knx_interface_rollo_kz_mitte
+  mode: single
+

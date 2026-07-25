@@ -1,0 +1,2 @@
+# KNX group addresses exposed as `knx_event` bus events (for automation triggers)
+- address: "0/2/12"  # OG zu/auf — Rollo group command (DPT 1.008 up/down), physical wall pushbutton

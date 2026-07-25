@@ -1149,3 +1149,379 @@ views:
                 name: Internet Zugang
               - entity: device_tracker.siemens_dishwasher_011060386223000149
                 name: Netzwerk Status
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # VIEW 7 — Pool
+  # ════════════════════════════════════════════════════════════════════════════
+  - title: Pool
+    icon: mdi:pool
+    cards:
+
+      # ── Overview strip ─────────────────────────────────────────────────────
+      - type: glance
+        title: Übersicht
+        show_name: true
+        show_icon: true
+        show_state: true
+        columns: 3
+        entities:
+          - entity: sensor.aseko_asin_aqua_salt_110220989_ph_wert
+            name: pH-Wert
+            icon: mdi:flask-outline
+          - entity: sensor.aseko_asin_aqua_salt_110220989_redox_potential
+            name: Redox
+            icon: mdi:lightning-bolt-outline
+          - entity: sensor.aseko_asin_aqua_salt_110220989_wassertemperatur
+            name: Wassertemperatur
+            icon: mdi:coolant-temperature
+          - entity: input_number.pool_ph_kanister_fuellstand
+            name: pH- Füllstand
+            icon: mdi:beaker-outline
+          - entity: sensor.aseko_asin_aqua_salt_110220989_verbindungsstatus
+            name: Verbindung
+            icon: mdi:wifi
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv
+            name: Elektrolyseur
+            icon: mdi:lightning-bolt
+
+      # ── Verlauf (collapsible, timeframe selectable via buttons) ─────────────
+      - type: custom:expander-card
+        title: Verlauf
+        expanded: false
+        cards:
+
+          # Zeitraum-Auswahl
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: 6 Stunden
+                icon: mdi:clock-outline
+                tap_action:
+                  action: perform-action
+                  perform_action: input_select.select_option
+                  target:
+                    entity_id: input_select.pool_chart_zeitraum
+                  data:
+                    option: "6 Stunden"
+              - type: button
+                name: 24 Stunden
+                icon: mdi:clock-outline
+                tap_action:
+                  action: perform-action
+                  perform_action: input_select.select_option
+                  target:
+                    entity_id: input_select.pool_chart_zeitraum
+                  data:
+                    option: "24 Stunden"
+              - type: button
+                name: 7 Tage
+                icon: mdi:clock-outline
+                tap_action:
+                  action: perform-action
+                  perform_action: input_select.select_option
+                  target:
+                    entity_id: input_select.pool_chart_zeitraum
+                  data:
+                    option: "7 Tage"
+
+          # pH-Wert
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "6 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: pH-Wert – Verlauf
+                show_states: true
+              graph_span: 6h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_ph_wert
+                  name: pH-Wert (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigter_ph_wert
+                  name: pH-Wert (Soll)
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "24 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: pH-Wert – Verlauf
+                show_states: true
+              graph_span: 24h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_ph_wert
+                  name: pH-Wert (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigter_ph_wert
+                  name: pH-Wert (Soll)
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "7 Tage"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: pH-Wert – Verlauf
+                show_states: true
+              graph_span: 7d
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_ph_wert
+                  name: pH-Wert (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigter_ph_wert
+                  name: pH-Wert (Soll)
+
+          # Redox-Potential
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "6 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Redox-Potential – Verlauf
+                show_states: true
+              graph_span: 6h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_redox_potential
+                  name: Redox-Potential (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigtes_redox_potential
+                  name: Redox-Potential (Soll)
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "24 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Redox-Potential – Verlauf
+                show_states: true
+              graph_span: 24h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_redox_potential
+                  name: Redox-Potential (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigtes_redox_potential
+                  name: Redox-Potential (Soll)
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "7 Tage"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Redox-Potential – Verlauf
+                show_states: true
+              graph_span: 7d
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_redox_potential
+                  name: Redox-Potential (aktuell)
+                - entity: sensor.aseko_asin_aqua_salt_110220989_benotigtes_redox_potential
+                  name: Redox-Potential (Soll)
+
+          # Wassertemperatur
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "6 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Wassertemperatur – Verlauf
+                show_states: true
+              graph_span: 6h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_wassertemperatur
+                  name: Wassertemperatur
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "24 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Wassertemperatur – Verlauf
+                show_states: true
+              graph_span: 24h
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_wassertemperatur
+                  name: Wassertemperatur
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "7 Tage"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: Wassertemperatur – Verlauf
+                show_states: true
+              graph_span: 7d
+              series:
+                - entity: sensor.aseko_asin_aqua_salt_110220989_wassertemperatur
+                  name: Wassertemperatur
+
+          # Elektrolyseur aktiv — on/off Verlauf
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "6 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: "Elektrolyseur aktiv – Verlauf"
+                show_states: true
+              graph_span: 6h
+              series:
+                - entity: binary_sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv
+                  name: Elektrolyseur aktiv
+                  type: line
+                  curve: stepline
+                  transform: "return x === 'on' ? 1 : 0;"
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "24 Stunden"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: "Elektrolyseur aktiv – Verlauf"
+                show_states: true
+              graph_span: 24h
+              series:
+                - entity: binary_sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv
+                  name: Elektrolyseur aktiv
+                  type: line
+                  curve: stepline
+                  transform: "return x === 'on' ? 1 : 0;"
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: input_select.pool_chart_zeitraum
+                state: "7 Tage"
+            card:
+              type: custom:apexcharts-card
+              header:
+                show: true
+                title: "Elektrolyseur aktiv – Verlauf"
+                show_states: true
+              graph_span: 7d
+              series:
+                - entity: binary_sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv
+                  name: Elektrolyseur aktiv
+                  type: line
+                  curve: stepline
+                  transform: "return x === 'on' ? 1 : 0;"
+
+      # Wasserchemie
+      - type: entities
+        title: Wasserchemie
+        icon: mdi:flask-outline
+        entities:
+          - entity: sensor.aseko_asin_aqua_salt_110220989_ph_wert
+            name: pH-Wert (aktuell)
+          - entity: sensor.aseko_asin_aqua_salt_110220989_benotigter_ph_wert
+            name: pH-Wert (Soll)
+          - entity: sensor.aseko_asin_aqua_salt_110220989_redox_potential
+            name: Redox-Potential (aktuell)
+          - entity: sensor.aseko_asin_aqua_salt_110220989_benotigtes_redox_potential
+            name: Redox-Potential (Soll)
+          - entity: sensor.aseko_asin_aqua_salt_110220989_wassertemperatur
+            name: Wassertemperatur
+          - entity: sensor.aseko_asin_aqua_salt_110220989_poolvolumen
+            name: Poolvolumen
+
+      # Pumpen & Wasserfluss
+      - type: entities
+        title: Pumpen & Wasserfluss
+        icon: mdi:pump
+        entities:
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_filtrationspumpe_lauft
+            name: Filtrationspumpe läuft
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_chlorpumpe_lauft
+            name: "Chlorpumpe läuft (unzuverlässig)"
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_ph_minus_pumpe_lauft
+            name: pH-Minus-Pumpe läuft
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_wasserfluss_zu_den_sensoren
+            name: Wasserfluss zu den Sensoren
+
+      # Dosierung & Verbrauch
+      - type: entities
+        title: Dosierung & Verbrauch
+        icon: mdi:cup-water
+        entities:
+          - entity: sensor.aseko_asin_aqua_salt_110220989_durchflussrate_chlor
+            name: Durchflussrate Chlor
+          - entity: sensor.aseko_asin_aqua_salt_110220989_durchflussrate_ph
+            name: Durchflussrate pH-
+          - entity: input_number.pool_ph_kanister_fuellstand
+            name: pH- Kanister Füllstand
+          - entity: sensor.aseko_asin_aqua_salt_110220989_ph_verbraucht_seit_nachfullung
+            name: pH- verbraucht (seit Nachfüllung)
+          - entity: sensor.aseko_asin_aqua_salt_110220989_ph_verbraucht_gesamt
+            name: pH- verbraucht (gesamt)
+          - entity: input_number.pool_ph_kanister_kapazitaet
+            name: pH- Kanister Kapazität
+          - entity: sensor.aseko_asin_aqua_salt_110220989_verzogerung_nach_dosierung
+            name: Verzögerung nach Dosierung
+          - entity: sensor.aseko_asin_aqua_salt_110220989_verzogerung_nach_start
+            name: Verzögerung nach Start
+        footer:
+          type: buttons
+          entities:
+            - entity: script.pool_ph_kanister_nachfuellen
+              name: pH- nachgefüllt
+              icon: mdi:beaker-plus-outline
+              tap_action:
+                action: perform-action
+                perform_action: script.turn_on
+                target:
+                  entity_id: script.pool_ph_kanister_nachfuellen
+
+      # Elektrolyse & Salzgehalt
+      - type: entities
+        title: Elektrolyse & Salzgehalt
+        icon: mdi:lightning-bolt
+        entities:
+          - entity: sensor.aseko_asin_aqua_salt_110220989_salzgehalt
+            name: Salzgehalt
+          - entity: binary_sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv
+            name: Elektrolyseur aktiv
+          - entity: sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_leistung
+            name: Elektrolyseur-Leistung
+          - entity: sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_richtung
+            name: Elektrolyseur-Richtung
+          - entity: sensor.aseko_asin_aqua_salt_110220989_elektrolyseur_aktiv_dauer_24h
+            name: "Elektrolyseur aktiv – Dauer (24h)"
+
+      # Status & Diagnose
+      - type: entities
+        title: Status & Diagnose
+        icon: mdi:information-outline
+        entities:
+          - entity: sensor.aseko_asin_aqua_salt_110220989_verbindungsstatus
+            name: Verbindungsstatus
+          - entity: sensor.aseko_asin_aqua_salt_110220989_letzter_datenstand
+            name: Letzter Datenstand
+          - entity: update.aseko_local_update_2
+            name: Integration Update

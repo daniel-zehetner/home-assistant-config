@@ -1,0 +1,10 @@
+# Documentation mirror only — storage-based, HA does not load this file.
+# See CLAUDE.md "HA storage model" section.
+
+pool_chart_zeitraum:
+  name: "Pool Chart Zeitraum"
+  icon: mdi:clock-outline
+  options:
+    - "6 Stunden"
+    - "24 Stunden"
+    - "7 Tage"

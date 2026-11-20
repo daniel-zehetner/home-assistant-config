@@ -8,13 +8,19 @@
   address: "2/1/1"
   state_address: "2/2/2"
 
-- name: "Schalten Licht Pool"
+# Poolhaus (Gartenhaus) — Schaltaktor im Poolhaus Unterverteiler (6.1.11)
+- name: "Poolhaus Abstellraum"
   address: "2/1/2"
   state_address: "2/2/3"
 
-- name: "Schalten Licht Weg"
+- name: "Poolhaus Aufenthaltsraum"
   address: "2/1/3"
   state_address: "2/2/4"
+
+# Gruppe: schaltet Poolhaus, Terrasse und Poolrand gemeinsam
+- name: "Licht Garten"
+  address: "2/1/4"
+  state_address: "2/2/5"
 
 - name: "Licht Terasse"
   address: "2/3/0"

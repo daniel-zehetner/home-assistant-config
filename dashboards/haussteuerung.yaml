@@ -46,10 +46,12 @@ views:
                 name: Terrasse (Schalten)
               - entity: light.knx_interface_schalten_licht_poolrand
                 name: Poolrand
-              - entity: light.knx_interface_schalten_licht_pool
-                name: Pool
-              - entity: light.knx_interface_schalten_licht_weg
-                name: Weg
+              - entity: light.knx_interface_poolhaus_abstellraum
+                name: Poolhaus Abstellraum
+              - entity: light.knx_interface_poolhaus_aufenthaltsraum
+                name: Poolhaus Aufenthaltsraum
+              - entity: light.knx_interface_licht_garten
+                name: Garten (Gruppe)
 
           # Abstellraum & Nebenraum
           - type: entities
@@ -417,10 +419,41 @@ views:
             name: Terrasse (Schalten)
           - entity: light.knx_interface_schalten_licht_poolrand
             name: Poolrand
-          - entity: light.knx_interface_schalten_licht_pool
-            name: Pool
-          - entity: light.knx_interface_schalten_licht_weg
-            name: Weg
+
+      # ── Poolhaus & Garten ──────────────────────────────────────────────────
+      - type: entities
+        title: Poolhaus & Garten
+        icon: mdi:home-roof
+        show_header_toggle: false
+        entities:
+          - entity: light.knx_interface_poolhaus_abstellraum
+            name: Poolhaus Abstellraum
+            icon: mdi:archive-outline
+          - entity: light.knx_interface_poolhaus_aufenthaltsraum
+            name: Poolhaus Aufenthaltsraum
+            icon: mdi:sofa-outline
+          - entity: light.knx_interface_licht_garten
+            name: Garten (Poolhaus, Terrasse, Poolrand)
+            icon: mdi:outdoor-lamp
+        footer:
+          type: buttons
+          entities:
+            - entity: light.knx_interface_licht_garten
+              name: Garten an
+              icon: mdi:lightbulb-on
+              tap_action:
+                action: perform-action
+                perform_action: light.turn_on
+                target:
+                  entity_id: light.knx_interface_licht_garten
+            - entity: light.knx_interface_licht_garten
+              name: Garten aus
+              icon: mdi:lightbulb-off-outline
+              tap_action:
+                action: perform-action
+                perform_action: light.turn_off
+                target:
+                  entity_id: light.knx_interface_licht_garten
 
       # ── Bewässerung master ─────────────────────────────────────────────────
       - type: entities

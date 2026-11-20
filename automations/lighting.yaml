@@ -18,8 +18,8 @@
           - light.schlafzimmer
           - light.knx_interface_schalten_licht_terasse
           - light.knx_interface_schalten_licht_poolrand
-          - light.knx_interface_schalten_licht_pool
-          - light.knx_interface_schalten_licht_weg
+          - light.knx_interface_poolhaus_abstellraum
+          - light.knx_interface_poolhaus_aufenthaltsraum
           - light.knx_interface_licht_abstellraum_schalten
           - light.knx_interface_licht_nebenraum
           - light.knx_interface_licht_terasse
@@ -43,8 +43,8 @@
           - light.schlafzimmer
           - light.knx_interface_schalten_licht_terasse
           - light.knx_interface_schalten_licht_poolrand
-          - light.knx_interface_schalten_licht_pool
-          - light.knx_interface_schalten_licht_weg
+          - light.knx_interface_poolhaus_abstellraum
+          - light.knx_interface_poolhaus_aufenthaltsraum
           - light.knx_interface_licht_abstellraum_schalten
           - light.knx_interface_licht_nebenraum
           - light.knx_interface_licht_terasse
